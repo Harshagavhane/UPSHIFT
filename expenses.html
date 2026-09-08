@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - Pawan Ganesh Mitra Mandal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        🙏 Pawan Ganesh Mitra Mandal
+    </div>
+
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="vargani.html">Vargani</a>
+        <a href="expenses.html" class="active">Expenses</a>
+        <a href="#">Reports</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <h1>Expense Management</h1>
+    <p class="subtitle">
+        Record and manage all mandal expenses.
+    </p>
+
+    <!-- Summary -->
+
+    <div class="cards">
+
+        <div class="card">
+            <th>Actions</th>
+            <h3>Total Expenses</h3>
+            <p id="totalExpenses">₹0</p>
+        </div>
+
+        <div class="card">
+            <h3>Expense Entries</h3>
+            <p id="expenseEntries">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Expense</h3>
+            <p id="averageExpense">₹0</p>
+        </div>
+
+    </div>
+
+
+    <!-- Expense Form -->
+
+    <section class="form-section">
+
+        <h2>➕ Add Expense</h2>
+
+        <form id="expenseForm">
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Expense Name</label>
+
+                    <input
+                        type="text"
+                        id="expenseName"
+                        placeholder="Example: Decoration"
+                        required
+                    >
+                </div>
+
+
+                <div>
+                    <label>Amount (₹)</label>
+
+                    <input
+                        type="number"
+                        id="expenseAmount"
+                        placeholder="Enter amount"
+                        min="1"
+                        required
+                    >
+                </div>
+
+
+                <div>
+                    <label>Date</label>
+
+                    <input
+                        type="date"
+                        id="expenseDate"
+                        required
+                    >
+                </div>
+
+
+                <div>
+                    <label>Paid By</label>
+
+                    <select id="paidBy" required>
+
+                        <option value="">
+                            Select member
+                        </option>
+
+                        <option value="Harsh Gavhane">
+                            Harsh Gavhane
+                        </option>
+
+                        <option value="Yash Devre">
+                            Yash Devre
+                        </option>
+
+                        <option value="Aryan Wagh">
+                            Aryan Wagh
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+                    <label>Category</label>
+
+                    <select id="expenseCategory" required>
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Decoration">
+                            Decoration
+                        </option>
+
+                        <option value="Prasad">
+                            Prasad / Food
+                        </option>
+
+                        <option value="Sound">
+                            Sound System
+                        </option>
+
+                        <option value="Lighting">
+                            Lighting
+                        </option>
+
+                        <option value="Murti">
+                            Ganpati Murti
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+                    <label>Payment Method</label>
+
+                    <select id="expensePayment" required>
+
+                        <option value="">
+                            Select method
+                        </option>
+
+                        <option value="Cash">
+                            Cash
+                        </option>
+
+                        <option value="UPI">
+                            UPI
+                        </option>
+
+                        <option value="Bank Transfer">
+                            Bank Transfer
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button type="submit" class="primary-btn">
+                Add Expense
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- Expense Records -->
+
+    <section class="table-section">
+
+        <h2>📋 Expense Records</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Expense</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Paid By</th>
+                        <th>Category</th>
+                        <th>Payment</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="expenseTable">
+
+                    <tr>
+                        <td colspan="6">
+                            No expense records yet.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Pawan Ganesh Mitra Mandal
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

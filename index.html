@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Pawan Ganesh Mitra Mandal</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🙏 Pawan Ganesh Mitra Mandal
+    </div>
+
+    <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="vargani.html">Vargani</a>
+    <a href="expenses.html">Expenses</a>
+    <a href="reports.html">Reports</a>
+    <a href="#" onclick="logout()">🚪 Logout</a>
+</nav>
+```html
+<section class="dashboard-charts">
+
+    <div class="chart-card">
+
+        <h2>👥 Collector Performance</h2>
+
+        <div id="collectorChart"></div>
+
+    </div>
+
+</section>
+```
+
+</header>
+
+
+<main class="container">
+
+    <h1>Dashboard</h1>
+
+    <p class="subtitle">
+        Pawan Ganesh Mitra Mandal Financial Overview
+    </p>
+
+
+    <!-- Financial Summary -->
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Vargani</h3>
+            <p id="dashboardVargani">₹0</p>
+        </div>
+
+
+        <div class="card">
+            <h3>Total Expenses</h3>
+            <p id="dashboardExpenses">₹0</p>
+        </div>
+
+
+        <div class="card">
+            <h3>Current Balance</h3>
+            <p id="dashboardBalance">₹0</p>
+        </div>
+
+
+        <div class="card">
+            <h3>Total Entries</h3>
+            <p id="dashboardEntries">0</p>
+        </div>
+
+    </div>
+
+
+    <!-- Collector Performance -->
+
+    <section class="table-section">
+
+        <h2>👥 Collection by Member</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Member</th>
+                        <th>Total Collected</th>
+                        <th>Entries</th>
+                    </tr>
+
+                </thead>
+
+```html
+<section class="dashboard-charts">
+
+    <div class="chart-card">
+        <h2>💰 Vargani vs Expenses</h2>
+
+        <div class="bar-chart">
+
+            <div class="bar-item">
+                <span>Vargani</span>
+                <div class="bar-track">
+                    <div id="varganiBar" class="bar-fill"></div>
+                </div>
+                <strong id="varganiChartAmount">₹0</strong>
+            </div>
+
+            <div class="bar-item">
+                <span>Expenses</span>
+                <div class="bar-track">
+                    <div id="expenseBar" class="bar-fill"></div>
+                </div>
+                <strong id="expenseChartAmount">₹0</strong>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+```
+
+                <tbody id="collectorTable">
+
+                    <tr>
+                        <td>Harsh Gavhane</td>
+                        <td>₹0</td>
+                        <td>0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Yash Devre</td>
+                        <td>₹0</td>
+                        <td>0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Aryan Wagh</td>
+                        <td>₹0</td>
+                        <td>0</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- Recent Vargani -->
+
+    <section class="table-section">
+
+        <h2>📋 Recent Vargani</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Collected By</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="recentVargani">
+
+                    <tr>
+                        <td colspan="4">
+                            No records yet.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Pawan Ganesh Mitra Mandal
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
