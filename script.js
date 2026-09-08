@@ -1,10 +1,17 @@
-// ================================
-// LOGIN PROTECTION
-// ================================
+// ======================================================
+// PAWAN GANESH MITRA MANDAL
+// MAIN JAVASCRIPT
+// ======================================================
+
+
+// ======================================================
+// PAGE / LOGIN PROTECTION
+// ======================================================
 
 const currentPage = window.location.pathname.split("/").pop();
 
 const protectedPages = [
+    "",
     "index.html",
     "vargani.html",
     "expenses.html",
@@ -17,64 +24,172 @@ if (
 ) {
     window.location.href = "login.html";
 }
-// ===============================
-// VARGANI MANAGEMENT
-// ===============================
 
-let varganiRecords = JSON.parse(localStorage.getItem("varganiRecords")) || [];
-function generateReceiptNumber() {
-    const records = JSON.parse(localStorage.getItem("varganiRecords")) || [];
 
-    const nextNumber = records.length + 1;
+// ======================================================
+// DATA
+// ======================================================
 
-    return `PGMM-${String(nextNumber).padStart(3, "0")}`;
+let varganiRecords = JSON.parse(
+    localStorage.getItem("varganiRecords") || "[]"
+);
+
+let expenseRecords = JSON.parse(
+    localStorage.getItem("expenseRecords") || "[]"
+);
+
+
+// ======================================================
+// SAVE DATA
+// ======================================================
+
+function saveVarganiRecords() {
+    localStorage.setItem(
+        "varganiRecords",
+        JSON.stringify(varganiRecords)
+    );
 }
+
+function saveExpenseRecords() {
+    localStorage.setItem(
+        "expenseRecords",
+        JSON.stringify(expenseRecords)
+    );
+}
+
+
+// ======================================================
+// HELPER
+// ======================================================
+
+function formatMoney(amount) {
+    return "₹" + Number(amount || 0).toFixed(2);
+}
+
+
+// ======================================================
+// VARGANI RECEIPT NUMBER
+// ======================================================
+
+function generateReceiptNumber() {
+
+    let highestNumber = 0;
+
+    varganiRecords.forEach(function(record) {
+
+        if (record.receiptNo) {
+
+            const match = String(record.receiptNo).match(/(\d+)$/);
+
+            if (match) {
+
+                const number = parseInt(match[1]);
+
+                if (number > highestNumber) {
+                    highestNumber = number;
+                }
+            }
+        }
+    });
+
+    return "PGMM-" +
+        String(highestNumber + 1).padStart(3, "0");
+}
+
+
+// ======================================================
+// VARGANI FORM
+// ======================================================
+
 const varganiForm = document.getElementById("varganiForm");
 
 if (varganiForm) {
 
-    varganiForm.addEventListener("submit", function (event) {
+    const receiptInput =
+        document.getElementById("receiptNo");
+
+    if (receiptInput && !receiptInput.value) {
+        receiptInput.value = generateReceiptNumber();
+    }
+
+    varganiForm.addEventListener("submit", function(event) {
 
         event.preventDefault();
 
-        const donorName = document.getElementById("donorName").value;
-        const amount = Number(document.getElementById("amount").value);
-        const date = document.getElementById("date").value;
-        const collectedBy = document.getElementById("collectedBy").value;
-        const paymentMethod = document.getElementById("paymentMethod").value;
-       let receiptNo = document.getElementById("receiptNo").value.trim();
+        // Supports latest IDs
+        const donorElement =
+            document.getElementById("personName") ||
+            document.getElementById("donorName");
 
-if (!receiptNo) {
-    receiptNo = generateReceiptNumber();
-}
+        const dateElement =
+            document.getElementById("varganiDate") ||
+            document.getElementById("date");
 
-if (!receiptNo) {
-    receiptNo = generateReceiptNumber();
-}
+        const donorName =
+            donorElement ? donorElement.value.trim() : "";
+
+        const amount =
+            parseFloat(
+                document.getElementById("amount")?.value
+            );
+
+        const date =
+            dateElement ? dateElement.value : "";
+
+        const collectedBy =
+            document.getElementById("collectedBy")?.value || "";
+
+        const paymentMethod =
+            document.getElementById("paymentMethod")?.value || "";
+
+        const receiptNo =
+            receiptInput ? receiptInput.value.trim() : "";
+
+        if (
+            !donorName ||
+            isNaN(amount) ||
+            amount <= 0 ||
+            !date ||
+            !collectedBy
+        ) {
+            alert("Please fill all required fields correctly.");
+            return;
+        }
 
         const newRecord = {
+
             id: Date.now(),
+
             donorName: donorName,
+
             amount: amount,
+
             date: date,
+
             collectedBy: collectedBy,
+
             paymentMethod: paymentMethod,
-            receiptNo: receiptNo
+
+            receiptNo:
+                receiptNo || generateReceiptNumber()
         };
 
         varganiRecords.push(newRecord);
 
-        localStorage.setItem(
-            "varganiRecords",
-            JSON.stringify(varganiRecords)
-        );
+        saveVarganiRecords();
+
+        alert("Vargani record added successfully! 🙏");
 
         varganiForm.reset();
 
+        if (receiptInput) {
+            receiptInput.value = generateReceiptNumber();
+        }
+
         displayVarganiRecords();
         updateVarganiSummary();
-
-        alert("Vargani added successfully! 🙏");
+        updateDashboard();
+        updateReports();
     });
 
     displayVarganiRecords();
@@ -82,221 +197,515 @@ if (!receiptNo) {
 }
 
 
-// ===============================
-// DISPLAY RECORDS
-// ===============================
+// ======================================================
+// DISPLAY VARGANI RECORDS
+// ======================================================
 
 function displayVarganiRecords() {
-    const table = document.getElementById("varganiTable");
 
-    if (!table) return;
+    const table =
+        document.getElementById("varganiTable");
+
+    if (!table) {
+        return;
+    }
 
     table.innerHTML = "";
 
     if (varganiRecords.length === 0) {
+
         table.innerHTML = `
             <tr>
-                <td colspan="7">No Vargani records yet.</td>
+                <td colspan="7" style="text-align:center;">
+                    No vargani records found.
+                </td>
             </tr>
         `;
+
         return;
     }
 
-    varganiRecords.forEach(function(record) {
-        const row = document.createElement("tr");
+    varganiRecords
+        .slice()
+        .reverse()
+        .forEach(function(record) {
 
-        row.innerHTML = `
-            <td>${record.receiptNo || "-"}</td>
-            <td>${record.donorName}</td>
-            <td>₹${record.amount}</td>
-            <td>${record.date}</td>
-            <td>${record.collectedBy}</td>
-            <td>${record.paymentMethod}</td>
-            <td>
-                <button onclick="printReceipt(${record.id})" class="receipt-btn">
-    🧾 Receipt
-</button>
+            const row =
+                document.createElement("tr");
 
-<button onclick="editVargani(${record.id})" class="edit-btn">
-    ✏️ Edit
-</button>
+            row.innerHTML = `
+                <td>${record.receiptNo || "-"}</td>
 
-<button onclick="deleteVargani(${record.id})" class="delete-btn">
-    🗑️ Delete
-</button>
-            </td>
-        `;
+                <td>${record.donorName || "-"}</td>
 
-        table.appendChild(row);
-    });
+                <td>${formatMoney(record.amount)}</td>
+
+                <td>${record.date || "-"}</td>
+
+                <td>${record.collectedBy || "-"}</td>
+
+                <td>${record.paymentMethod || "-"}</td>
+
+                <td>
+                    <button
+                        class="action-btn"
+                        onclick="editVargani(${record.id})">
+                        ✏️
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        onclick="deleteVargani(${record.id})">
+                        🗑️
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        onclick="printReceipt(${record.id})">
+                        🧾
+                    </button>
+                </td>
+            `;
+
+            table.appendChild(row);
+        });
 }
 
-    varganiRecords.forEach(function(record) {
 
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td>${record.receiptNo || "-"}</td>
-            <td>${record.donorName}</td>
-            <td>₹${record.amount}</td>
-            <td>${record.date}</td>
-            <td>${record.collectedBy}</td>
-            <td>${record.paymentMethod}</td>
-        `;
-
-        table.appendChild(row);
-    });
-}
-
-
-// ===============================
-// UPDATE SUMMARY
-// ===============================
+// ======================================================
+// VARGANI SUMMARY
+// ======================================================
 
 function updateVarganiSummary() {
 
-    const totalVargani = varganiRecords.reduce(
-        (total, record) => total + record.amount,
-        0
-    );
+    const totalVargani =
+        varganiRecords.reduce(function(total, record) {
 
-    const totalEntries = varganiRecords.length;
+            return total +
+                Number(record.amount || 0);
+
+        }, 0);
+
+    const entries =
+        varganiRecords.length;
 
     const average =
-        totalEntries > 0
-            ? totalVargani / totalEntries
+        entries > 0
+            ? totalVargani / entries
             : 0;
 
-    const cards = document.querySelectorAll(".card");
 
-    if (cards.length >= 3) {
+    const totalElement =
+        document.getElementById("totalVargani");
 
-        cards[0].querySelector("p").textContent =
-            `₹${totalVargani}`;
+    const entriesElement =
+        document.getElementById("totalVarganiEntries") ||
+        document.getElementById("varganiEntries");
 
-        cards[1].querySelector("p").textContent =
-            totalEntries;
+    const averageElement =
+        document.getElementById("averageVargani");
 
-        cards[2].querySelector("p").textContent =
-            `₹${Math.round(average)}`;
+
+    if (totalElement) {
+        totalElement.textContent =
+            formatMoney(totalVargani);
+    }
+
+    if (entriesElement) {
+        entriesElement.textContent =
+            entries;
+    }
+
+    if (averageElement) {
+        averageElement.textContent =
+            formatMoney(average);
     }
 }
-// ===============================
-// EXPENSE MANAGEMENT
-// ===============================
+
+
+// ======================================================
+// DELETE VARGANI
+// ======================================================
+
 function deleteVargani(id) {
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this Vargani record?"
-    );
 
-    if (!confirmDelete) return;
+    if (!confirm(
+        "Are you sure you want to delete this vargani record?"
+    )) {
+        return;
+    }
 
-    varganiRecords = varganiRecords.filter(function(record) {
-        return record.id !== id;
-    });
+    varganiRecords =
+        varganiRecords.filter(function(record) {
+            return record.id !== id;
+        });
 
-    localStorage.setItem(
-        "varganiRecords",
-        JSON.stringify(varganiRecords)
-    );
+    saveVarganiRecords();
 
     displayVarganiRecords();
     updateVarganiSummary();
     updateDashboard();
-updateCollectorChart(vargani);
+    updateReports();
+
     alert("Vargani record deleted.");
 }
 
 
+// ======================================================
+// EDIT VARGANI
+// ======================================================
+
 function editVargani(id) {
-    const record = varganiRecords.find(function(item) {
-        return item.id === id;
-    });
 
-    if (!record) return;
+    const record =
+        varganiRecords.find(function(item) {
+            return item.id === id;
+        });
 
-    document.getElementById("donorName").value = record.donorName;
-    document.getElementById("amount").value = record.amount;
-    document.getElementById("date").value = record.date;
-    document.getElementById("collectedBy").value = record.collectedBy;
-    document.getElementById("paymentMethod").value = record.paymentMethod;
-    document.getElementById("receiptNo").value = record.receiptNo || "";
+    if (!record) {
+        return;
+    }
 
-    varganiRecords = varganiRecords.filter(function(item) {
-        return item.id !== id;
-    });
 
-    localStorage.setItem(
-        "varganiRecords",
-        JSON.stringify(varganiRecords)
-    );
+    const donorName =
+        prompt(
+            "Person / Shop Name:",
+            record.donorName
+        );
+
+    if (donorName === null) {
+        return;
+    }
+
+
+    const amount =
+        prompt(
+            "Amount:",
+            record.amount
+        );
+
+    if (amount === null) {
+        return;
+    }
+
+
+    const numericAmount =
+        parseFloat(amount);
+
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+
+
+    const date =
+        prompt(
+            "Date:",
+            record.date
+        );
+
+    if (date === null) {
+        return;
+    }
+
+
+    record.donorName =
+        donorName.trim();
+
+    record.amount =
+        numericAmount;
+
+    record.date =
+        date;
+
+
+    saveVarganiRecords();
 
     displayVarganiRecords();
     updateVarganiSummary();
+    updateDashboard();
+    updateReports();
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    alert("Edit the details and submit again.");
+    alert("Vargani record updated successfully.");
 }
-let expenseRecords =
-    JSON.parse(localStorage.getItem("expenseRecords")) || [];
 
-const expenseForm = document.getElementById("expenseForm");
+
+// ======================================================
+// PRINT RECEIPT
+// ======================================================
+
+function printReceipt(id) {
+
+    const record =
+        varganiRecords.find(function(item) {
+            return item.id === id;
+        });
+
+    if (!record) {
+        return;
+    }
+
+
+    const receiptWindow =
+        window.open("", "_blank");
+
+    if (!receiptWindow) {
+        alert("Please allow pop-ups to print the receipt.");
+        return;
+    }
+
+
+    receiptWindow.document.write(`
+
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>
+                Vargani Receipt - ${record.receiptNo}
+            </title>
+
+            <style>
+
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 40px;
+                    text-align: center;
+                }
+
+                .receipt {
+                    max-width: 600px;
+                    margin: auto;
+                    border: 2px solid #222;
+                    padding: 30px;
+                }
+
+                h1 {
+                    margin-bottom: 5px;
+                }
+
+                h2 {
+                    margin-top: 5px;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 25px;
+                }
+
+                td {
+                    border: 1px solid #ccc;
+                    padding: 12px;
+                    text-align: left;
+                }
+
+                .amount {
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+
+                .footer {
+                    margin-top: 30px;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <div class="receipt">
+
+                <h1>
+                    🙏 Pawan Ganesh Mitra Mandal
+                </h1>
+
+                <h2>
+                    Vargani Receipt
+                </h2>
+
+                <p>
+                    Receipt No:
+                    <strong>${record.receiptNo}</strong>
+                </p>
+
+                <table>
+
+                    <tr>
+                        <td>Person / Shop Name</td>
+                        <td>${record.donorName}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Date</td>
+                        <td>${record.date}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Collected By</td>
+                        <td>${record.collectedBy}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Payment Method</td>
+                        <td>${record.paymentMethod || "-"}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Amount</td>
+
+                        <td class="amount">
+                            ${formatMoney(record.amount)}
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div class="footer">
+                    Thank you for your contribution! 🙏
+                </div>
+
+            </div>
+
+            <script>
+
+                window.onload = function() {
+                    window.print();
+                };
+
+            <\/script>
+
+        </body>
+
+        </html>
+    `);
+
+    receiptWindow.document.close();
+}
+
+
+// ======================================================
+// EXPENSE FORM
+// ======================================================
+
+const expenseForm =
+    document.getElementById("expenseForm");
 
 if (expenseForm) {
 
-    expenseForm.addEventListener("submit", function (event) {
+    expenseForm.addEventListener("submit", function(event) {
 
         event.preventDefault();
 
+
+        const expenseNameElement =
+            document.getElementById("expenseName");
+
+        const expenseAmountElement =
+            document.getElementById("expenseAmount");
+
+        const expenseDateElement =
+            document.getElementById("expenseDate");
+
+        const paidByElement =
+            document.getElementById("paidBy");
+
+        const categoryElement =
+            document.getElementById("expenseCategory") ||
+            document.getElementById("category");
+
+        const paymentElement =
+            document.getElementById("expensePayment");
+
+
         const expenseName =
-            document.getElementById("expenseName").value;
+            expenseNameElement
+                ? expenseNameElement.value.trim()
+                : "";
 
-        const amount =
-            Number(document.getElementById("expenseAmount").value);
 
-        const date =
-            document.getElementById("expenseDate").value;
+        const expenseAmount =
+            expenseAmountElement
+                ? parseFloat(expenseAmountElement.value)
+                : NaN;
+
+
+        const expenseDate =
+            expenseDateElement
+                ? expenseDateElement.value
+                : "";
+
 
         const paidBy =
-            document.getElementById("paidBy").value;
+            paidByElement
+                ? paidByElement.value
+                : "";
+
 
         const category =
-            document.getElementById("expenseCategory").value;
+            categoryElement
+                ? categoryElement.value
+                : "";
 
-        const payment =
-            document.getElementById("expensePayment").value;
+
+        const expensePayment =
+            paymentElement
+                ? paymentElement.value
+                : "";
+
+
+        if (
+            !expenseName ||
+            isNaN(expenseAmount) ||
+            expenseAmount <= 0 ||
+            !expenseDate ||
+            !paidBy
+        ) {
+
+            alert(
+                "Please fill all required fields correctly."
+            );
+
+            return;
+        }
 
 
         const newExpense = {
+
             id: Date.now(),
+
             expenseName: expenseName,
-            amount: amount,
-            date: date,
+
+            amount: expenseAmount,
+
+            date: expenseDate,
+
             paidBy: paidBy,
+
             category: category,
-            payment: payment
+
+            paymentMethod: expensePayment
         };
 
 
         expenseRecords.push(newExpense);
 
+        saveExpenseRecords();
 
-        localStorage.setItem(
-            "expenseRecords",
-            JSON.stringify(expenseRecords)
-        );
+
+        alert("Expense added successfully! 💰");
 
 
         expenseForm.reset();
 
+
         displayExpenseRecords();
         updateExpenseSummary();
-
-        alert("Expense added successfully! ✅");
+        updateDashboard();
+        updateReports();
     });
 
 
@@ -305,258 +714,323 @@ if (expenseForm) {
 }
 
 
-// ===============================
-// DISPLAY EXPENSES
-// ===============================
+// ======================================================
+// DISPLAY EXPENSE RECORDS
+// ======================================================
 
 function displayExpenseRecords() {
-    const table = document.getElementById("expenseTable");
 
-    if (!table) return;
+    const table =
+        document.getElementById("expenseTable");
 
-    table.innerHTML = "";
-
-    if (expenseRecords.length === 0) {
-        table.innerHTML = `
-            <tr>
-                <td colspan="8">No expense records yet.</td>
-            </tr>
-        `;
+    if (!table) {
         return;
     }
 
-    expenseRecords.forEach(function(record) {
-        const row = document.createElement("tr");
 
-        row.innerHTML = `
-            <td>${record.expenseName}</td>
-            <td>₹${record.amount}</td>
-            <td>${record.date}</td>
-            <td>${record.paidBy}</td>
-            <td>${record.category}</td>
-            <td>${record.payment}</td>
-            <td>
-                <button onclick="editExpense(${record.id})" class="edit-btn">
-                    ✏️ Edit
-                </button>
+    table.innerHTML = "";
 
-                <button onclick="deleteExpense(${record.id})" class="delete-btn">
-                    🗑️ Delete
-                </button>
-            </td>
+
+    if (expenseRecords.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center;">
+                    No expense records found.
+                </td>
+            </tr>
         `;
 
-        table.appendChild(row);
-    });
-}
-function deleteExpense(id) {
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this expense?"
-    );
-
-    if (!confirmDelete) return;
-
-    expenseRecords = expenseRecords.filter(function(record) {
-        return record.id !== id;
-    });
-
-    localStorage.setItem(
-        "expenseRecords",
-        JSON.stringify(expenseRecords)
-    );
-
-    displayExpenseRecords();
-    updateExpenseSummary();
-    updateDashboard();
-
-    alert("Expense deleted.");
-}
+        return;
+    }
 
 
-function editExpense(id) {
-    const record = expenseRecords.find(function(item) {
-        return item.id === id;
-    });
+    expenseRecords
+        .slice()
+        .reverse()
+        .forEach(function(expense) {
 
-    if (!record) return;
-
-    document.getElementById("expenseName").value = record.expenseName;
-    document.getElementById("expenseAmount").value = record.amount;
-    document.getElementById("expenseDate").value = record.date;
-    document.getElementById("paidBy").value = record.paidBy;
-    document.getElementById("expenseCategory").value = record.category;
-    document.getElementById("expensePayment").value = record.payment;
-
-    expenseRecords = expenseRecords.filter(function(item) {
-        return item.id !== id;
-    });
-
-    localStorage.setItem(
-        "expenseRecords",
-        JSON.stringify(expenseRecords)
-    );
-
-    displayExpenseRecords();
-    updateExpenseSummary();
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    alert("Edit the details and submit again.");
-}
+            const row =
+                document.createElement("tr");
 
 
-    expenseRecords.forEach(function (expense) {
+            row.innerHTML = `
 
-        const row =
-            document.createElement("tr");
+                <td>
+                    ${expense.expenseName || "-"}
+                </td>
 
-        row.innerHTML = `
-            <td>${expense.expenseName}</td>
-            <td>₹${expense.amount}</td>
-            <td>${expense.date}</td>
-            <td>${expense.paidBy}</td>
-            <td>${expense.category}</td>
-            <td>${expense.payment}</td>
-        `;
+                <td>
+                    ${formatMoney(expense.amount)}
+                </td>
 
-        table.appendChild(row);
-    });
+                <td>
+                    ${expense.date || "-"}
+                </td>
+
+                <td>
+                    ${expense.paidBy || "-"}
+                </td>
+
+                <td>
+                    ${expense.category || "-"}
+                </td>
+
+                <td>
+                    ${expense.paymentMethod || "-"}
+                </td>
+
+                <td>
+
+                    <button
+                        class="action-btn"
+                        onclick="editExpense(${expense.id})">
+                        ✏️
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        onclick="deleteExpense(${expense.id})">
+                        🗑️
+                    </button>
+
+                </td>
+            `;
+
+
+            table.appendChild(row);
+        });
 }
 
 
-// ===============================
-// UPDATE EXPENSE SUMMARY
-// ===============================
+// ======================================================
+// EXPENSE SUMMARY
+// ======================================================
 
 function updateExpenseSummary() {
 
-    const total =
-        expenseRecords.reduce(
-            (sum, expense) =>
-                sum + expense.amount,
-            0
-        );
+    const totalExpenses =
+        expenseRecords.reduce(function(total, expense) {
+
+            return total +
+                Number(expense.amount || 0);
+
+        }, 0);
+
 
     const entries =
         expenseRecords.length;
 
+
     const average =
         entries > 0
-            ? total / entries
+            ? totalExpenses / entries
             : 0;
 
 
     const totalElement =
         document.getElementById("totalExpenses");
 
+
     const entriesElement =
+        document.getElementById("totalExpenseEntries") ||
         document.getElementById("expenseEntries");
+
 
     const averageElement =
         document.getElementById("averageExpense");
 
 
-    if (totalElement)
-        totalElement.textContent = `₹${total}`;
+    if (totalElement) {
 
-    if (entriesElement)
-        entriesElement.textContent = entries;
+        totalElement.textContent =
+            formatMoney(totalExpenses);
+    }
 
-    if (averageElement)
+
+    if (entriesElement) {
+
+        entriesElement.textContent =
+            entries;
+    }
+
+
+    if (averageElement) {
+
         averageElement.textContent =
-            `₹${Math.round(average)}`;
+            formatMoney(average);
+    }
 }
-// ===============================
+
+
+// ======================================================
+// DELETE EXPENSE
+// ======================================================
+
+function deleteExpense(id) {
+
+    if (!confirm(
+        "Are you sure you want to delete this expense?"
+    )) {
+        return;
+    }
+
+
+    expenseRecords =
+        expenseRecords.filter(function(expense) {
+
+            return expense.id !== id;
+
+        });
+
+
+    saveExpenseRecords();
+
+
+    displayExpenseRecords();
+    updateExpenseSummary();
+    updateDashboard();
+    updateReports();
+
+
+    alert("Expense deleted.");
+}
+
+
+// ======================================================
+// EDIT EXPENSE
+// ======================================================
+
+function editExpense(id) {
+
+    const expense =
+        expenseRecords.find(function(item) {
+
+            return item.id === id;
+
+        });
+
+
+    if (!expense) {
+        return;
+    }
+
+
+    const name =
+        prompt(
+            "Expense Name:",
+            expense.expenseName
+        );
+
+
+    if (name === null) {
+        return;
+    }
+
+
+    const amount =
+        prompt(
+            "Amount:",
+            expense.amount
+        );
+
+
+    if (amount === null) {
+        return;
+    }
+
+
+    const numericAmount =
+        parseFloat(amount);
+
+
+    if (
+        isNaN(numericAmount) ||
+        numericAmount <= 0
+    ) {
+
+        alert("Please enter a valid amount.");
+
+        return;
+    }
+
+
+    const date =
+        prompt(
+            "Date:",
+            expense.date
+        );
+
+
+    if (date === null) {
+        return;
+    }
+
+
+    expense.expenseName =
+        name.trim();
+
+    expense.amount =
+        numericAmount;
+
+    expense.date =
+        date;
+
+
+    saveExpenseRecords();
+
+
+    displayExpenseRecords();
+    updateExpenseSummary();
+    updateDashboard();
+    updateReports();
+
+
+    alert("Expense updated successfully.");
+}
+
+
+// ======================================================
 // DASHBOARD
-// ===============================
+// ======================================================
 
 function updateDashboard() {
-    ```javascript
-// Update financial chart
-
-const varganiBar = document.getElementById("varganiBar");
-const expenseBar = document.getElementById("expenseBar");
-
-const varganiChartAmount =
-    document.getElementById("varganiChartAmount");
-
-const expenseChartAmount =
-    document.getElementById("expenseChartAmount");
-
-const maxAmount = Math.max(
-    totalVargani,
-    totalExpenses,
-    1
-);
-
-if (varganiBar) {
-    varganiBar.style.width =
-        `${(totalVargani / maxAmount) * 100}%`;
-}
-
-if (expenseBar) {
-    expenseBar.style.width =
-        `${(totalExpenses / maxAmount) * 100}%`;
-}
-
-if (varganiChartAmount) {
-    varganiChartAmount.textContent =
-        `₹${totalVargani}`;
-}
-
-if (expenseChartAmount) {
-    expenseChartAmount.textContent =
-        `₹${totalExpenses}`;
-}
-```
-
-
-    const vargani =
-        JSON.parse(localStorage.getItem("varganiRecords")) || [];
-
-    const expenses =
-        JSON.parse(localStorage.getItem("expenseRecords")) || [];
-
-
-    // Total Vargani
 
     const totalVargani =
-        vargani.reduce(
-            (sum, record) => sum + Number(record.amount),
-            0
-        );
+        varganiRecords.reduce(function(total, record) {
 
+            return total +
+                Number(record.amount || 0);
 
-    // Total Expenses
+        }, 0);
+
 
     const totalExpenses =
-        expenses.reduce(
-            (sum, expense) => sum + Number(expense.amount),
-            0
-        );
+        expenseRecords.reduce(function(total, expense) {
 
+            return total +
+                Number(expense.amount || 0);
 
-    // Current Balance
+        }, 0);
+
 
     const balance =
         totalVargani - totalExpenses;
 
 
-    // Total Entries
+    const entries =
+        varganiRecords.length +
+        expenseRecords.length;
 
-    const totalEntries =
-        vargani.length + expenses.length;
 
-
-    // Update Dashboard Cards
+    // ------------------------------
+    // DASHBOARD CARDS
+    // ------------------------------
 
     const varganiElement =
         document.getElementById("dashboardVargani");
 
-    const expensesElement =
+    const expenseElement =
         document.getElementById("dashboardExpenses");
 
     const balanceElement =
@@ -566,166 +1040,106 @@ if (expenseChartAmount) {
         document.getElementById("dashboardEntries");
 
 
-    if (varganiElement)
+    if (varganiElement) {
+
         varganiElement.textContent =
-            `₹${totalVargani}`;
+            formatMoney(totalVargani);
+    }
 
-    if (expensesElement)
-        expensesElement.textContent =
-            `₹${totalExpenses}`;
 
-    if (balanceElement)
+    if (expenseElement) {
+
+        expenseElement.textContent =
+            formatMoney(totalExpenses);
+    }
+
+
+    if (balanceElement) {
+
         balanceElement.textContent =
-            `₹${balance}`;
+            formatMoney(balance);
+    }
 
-    if (entriesElement)
+
+    if (entriesElement) {
+
         entriesElement.textContent =
-            totalEntries;
+            entries;
+    }
 
 
-    updateCollectorTable(vargani);
+    // ------------------------------
+    // TABLES
+    // ------------------------------
 
-    updateRecentVargani(vargani);
+    updateCollectorTable();
+
+    updateRecentVargani();
+
+
+    // ------------------------------
+    // CHARTS
+    // ------------------------------
+
+    updateFinancialChart();
+
+    updateCollectorChart(varganiRecords);
 }
 
 
-// ===============================
+// ======================================================
 // COLLECTOR TABLE
-// ===============================
+// ======================================================
 
-function updateCollectorTable(records) {
+function updateCollectorTable() {
 
     const table =
         document.getElementById("collectorTable");
 
-    if (!table) return;
-
-
-    const members = [
-        "Harsh Gavhane",
-        "Yash Devre",
-        "Aryan Wagh"
-    ];
+    if (!table) {
+        return;
+    }
 
 
     table.innerHTML = "";
 
 
-    members.forEach(function(member) {
-
-        const memberRecords =
-            records.filter(
-                record =>
-                    record.collectedBy === member
-            );
+    const collectors = {};
 
 
-        const total =
-            memberRecords.reduce(
-                (sum, record) =>
-                    sum + Number(record.amount),
-                0
-            );
+    varganiRecords.forEach(function(record) {
+
+        const collector =
+            record.collectedBy || "Unknown";
 
 
-        const row =
-            document.createElement("tr");
+        if (!collectors[collector]) {
+
+            collectors[collector] = {
+                amount: 0,
+                entries: 0
+            };
+        }
 
 
-        row.innerHTML = `
-            <td>${member}</td>
-            <td>₹${total}</td>
-            <td>${memberRecords.length}</td>
-        `;
+        collectors[collector].amount +=
+            Number(record.amount || 0);
 
 
-        table.appendChild(row);
-    });
-}
-```javascript
-// ================================
-// COLLECTOR PERFORMANCE CHART
-// ================================
-
-function updateCollectorChart(records) {
-
-    const chart = document.getElementById("collectorChart");
-
-    if (!chart) return;
-
-    const members = [
-        "Harsh Gavhane",
-        "Yash Devre",
-        "Aryan Wagh"
-    ];
-
-    const totals = members.map(function(member) {
-
-        return records
-            .filter(record => record.collectedBy === member)
-            .reduce(
-                (sum, record) => sum + Number(record.amount),
-                0
-            );
-
+        collectors[collector].entries++;
     });
 
-    const maxTotal = Math.max(...totals, 1);
 
-    chart.innerHTML = "";
-
-    members.forEach(function(member, index) {
-
-        const total = totals[index];
-
-        const percentage =
-            (total / maxTotal) * 100;
-
-        const item = document.createElement("div");
-
-        item.className = "collector-bar-item";
-
-        item.innerHTML = `
-            <div class="collector-bar-header">
-                <span>${member}</span>
-                <strong>₹${total}</strong>
-            </div>
-
-            <div class="collector-bar-track">
-                <div
-                    class="collector-bar-fill"
-                    style="width: ${percentage}%">
-                </div>
-            </div>
-        `;
-
-        chart.appendChild(item);
-    });
-}
-```
+    const names =
+        Object.keys(collectors);
 
 
-// ===============================
-// RECENT VARGANI
-// ===============================
-
-function updateRecentVargani(records) {
-
-    const table =
-        document.getElementById("recentVargani");
-
-    if (!table) return;
-
-
-    table.innerHTML = "";
-
-
-    if (records.length === 0) {
+    if (names.length === 0) {
 
         table.innerHTML = `
             <tr>
-                <td colspan="4">
-                    No records yet.
+                <td colspan="3" style="text-align:center;">
+                    No collector data available.
                 </td>
             </tr>
         `;
@@ -734,8 +1148,80 @@ function updateRecentVargani(records) {
     }
 
 
+    names
+        .sort(function(a, b) {
+
+            return collectors[b].amount -
+                collectors[a].amount;
+
+        })
+        .forEach(function(name) {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${name}
+                </td>
+
+                <td>
+                    ${collectors[name].entries}
+                </td>
+
+                <td>
+                    ${formatMoney(
+                        collectors[name].amount
+                    )}
+                </td>
+            `;
+
+
+            table.appendChild(row);
+        });
+}
+
+
+// ======================================================
+// RECENT VARGANI
+// ======================================================
+
+function updateRecentVargani() {
+
+    const table =
+        document.getElementById("recentVargani");
+
+    if (!table) {
+        return;
+    }
+
+
+    table.innerHTML = "";
+
+
     const recent =
-        [...records].reverse().slice(0, 5);
+        varganiRecords
+            .slice()
+            .sort(function(a, b) {
+                return Number(b.id) - Number(a.id);
+            })
+            .slice(0, 5);
+
+
+    if (recent.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align:center;">
+                    No recent vargani records.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
 
 
     recent.forEach(function(record) {
@@ -745,10 +1231,26 @@ function updateRecentVargani(records) {
 
 
         row.innerHTML = `
-            <td>${record.donorName}</td>
-            <td>₹${record.amount}</td>
-            <td>${record.date}</td>
-            <td>${record.collectedBy}</td>
+
+            <td>
+                ${record.receiptNo || "-"}
+            </td>
+
+            <td>
+                ${record.donorName || "-"}
+            </td>
+
+            <td>
+                ${formatMoney(record.amount)}
+            </td>
+
+            <td>
+                ${record.date || "-"}
+            </td>
+
+            <td>
+                ${record.collectedBy || "-"}
+            </td>
         `;
 
 
@@ -757,211 +1259,255 @@ function updateRecentVargani(records) {
 }
 
 
-// Run Dashboard
+// ======================================================
+// FINANCIAL CHART
+// ======================================================
 
-updateDashboard();
-function printReceipt(id) {
-    const records = JSON.parse(
-        localStorage.getItem("varganiRecords")
-    ) || [];
+function updateFinancialChart() {
 
-    const record = records.find(function(item) {
-        return item.id === id;
-    });
+    const varganiBar =
+        document.getElementById("varganiBar");
 
-    if (!record) {
-        alert("Receipt record not found.");
+    const expenseBar =
+        document.getElementById("expenseBar");
+
+    const varganiValue =
+        document.getElementById("varganiChartValue");
+
+    const expenseValue =
+        document.getElementById("expenseChartValue");
+
+
+    const totalVargani =
+        varganiRecords.reduce(function(total, record) {
+
+            return total +
+                Number(record.amount || 0);
+
+        }, 0);
+
+
+    const totalExpenses =
+        expenseRecords.reduce(function(total, expense) {
+
+            return total +
+                Number(expense.amount || 0);
+
+        }, 0);
+
+
+    const maximum =
+        Math.max(
+            totalVargani,
+            totalExpenses,
+            1
+        );
+
+
+    const varganiHeight =
+        (totalVargani / maximum) * 100;
+
+
+    const expenseHeight =
+        (totalExpenses / maximum) * 100;
+
+
+    if (varganiBar) {
+
+        varganiBar.style.height =
+            varganiHeight + "%";
+    }
+
+
+    if (expenseBar) {
+
+        expenseBar.style.height =
+            expenseHeight + "%";
+    }
+
+
+    if (varganiValue) {
+
+        varganiValue.textContent =
+            formatMoney(totalVargani);
+    }
+
+
+    if (expenseValue) {
+
+        expenseValue.textContent =
+            formatMoney(totalExpenses);
+    }
+}
+
+
+// ======================================================
+// COLLECTOR PERFORMANCE CHART
+// ======================================================
+
+function updateCollectorChart(records) {
+
+    const chart =
+        document.getElementById("collectorChart");
+
+    if (!chart) {
         return;
     }
 
-    const receiptWindow = window.open(
-        "",
-        "_blank",
-        "width=700,height=800"
-    );
 
-    receiptWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>${record.receiptNo} - Receipt</title>
+    chart.innerHTML = "";
 
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background: #f5f5f5;
-                    padding: 30px;
-                }
 
-                .receipt {
-                    max-width: 600px;
-                    margin: auto;
-                    background: white;
-                    padding: 35px;
-                    border: 2px solid #222;
-                }
+    const collectors = {};
 
-                .header {
-                    text-align: center;
-                    border-bottom: 2px solid #222;
-                    padding-bottom: 20px;
-                    margin-bottom: 25px;
-                }
 
-                .header h1 {
-                    margin: 0;
-                    font-size: 28px;
-                }
+    records.forEach(function(record) {
 
-                .header p {
-                    margin: 8px 0 0;
-                    color: #555;
-                }
+        const name =
+            record.collectedBy || "Unknown";
 
-                .receipt-number {
-                    text-align: right;
-                    font-weight: bold;
-                    margin-bottom: 20px;
-                }
 
-                .row {
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 12px 0;
-                    border-bottom: 1px solid #ddd;
-                }
+        if (!collectors[name]) {
+            collectors[name] = 0;
+        }
 
-                .label {
-                    font-weight: bold;
-                }
 
-                .amount {
-                    font-size: 24px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 25px 0;
-                }
+        collectors[name] +=
+            Number(record.amount || 0);
+    });
 
-                .footer {
-                    text-align: center;
-                    margin-top: 30px;
-                    color: #555;
-                }
 
-                .print-btn {
-                    display: block;
-                    margin: 25px auto 0;
-                    padding: 12px 25px;
-                    background: #222;
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                    font-size: 16px;
-                }
+    const names =
+        Object.keys(collectors);
 
-                @media print {
-                    body {
-                        background: white;
-                        padding: 0;
-                    }
 
-                    .receipt {
-                        border: 2px solid #222;
-                    }
+    if (names.length === 0) {
 
-                    .print-btn {
-                        display: none;
-                    }
-                }
-            </style>
-        </head>
+        chart.innerHTML = `
+            <p style="text-align:center;">
+                No collector data available.
+            </p>
+        `;
 
-        <body>
+        return;
+    }
 
-            <div class="receipt">
 
-                <div class="header">
-                    <h1>Pawan Ganesh Mitra Mandal</h1>
-                    <p>Vargani Collection Receipt</p>
-                </div>
+    names.sort(function(a, b) {
 
-                <div class="receipt-number">
-                    Receipt No: ${record.receiptNo}
-                </div>
+        return collectors[b] -
+            collectors[a];
 
-                <div class="row">
-                    <span class="label">Name / Shop</span>
-                    <span>${record.donorName}</span>
-                </div>
+    });
 
-                <div class="row">
-                    <span class="label">Date</span>
-                    <span>${record.date}</span>
-                </div>
 
-                <div class="row">
-                    <span class="label">Collected By</span>
-                    <span>${record.collectedBy}</span>
-                </div>
+    const maxAmount =
+        Math.max(
+            ...names.map(function(name) {
+                return collectors[name];
+            }),
+            1
+        );
 
-                <div class="row">
-                    <span class="label">Payment Method</span>
-                    <span>${record.paymentMethod}</span>
-                </div>
 
-                <div class="amount">
-                    Amount Received: ₹${record.amount}
-                </div>
+    names.forEach(function(name) {
 
-                <div class="footer">
-                    <p>Thank you for your contribution 🙏</p>
-                    <p>Ganpati Bappa Morya! 🐘</p>
-                </div>
+        const percentage =
+            (collectors[name] / maxAmount) * 100;
 
-                <button
-                    class="print-btn"
-                    onclick="window.print()">
-                    🖨️ Print Receipt
-                </button>
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "collector-chart-item";
+
+
+        item.innerHTML = `
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin-bottom:6px;
+            ">
+
+                <strong>
+                    ${name}
+                </strong>
+
+                <span>
+                    ${formatMoney(collectors[name])}
+                </span>
 
             </div>
 
-        </body>
-        </html>
-    `);
 
-    receiptWindow.document.close();
+            <div style="
+                width:100%;
+                height:12px;
+                background:#eee;
+                border-radius:10px;
+                overflow:hidden;
+                margin-bottom:15px;
+            ">
+
+                <div style="
+                    width:${percentage}%;
+                    height:100%;
+                    background:linear-gradient(
+                        90deg,
+                        #ff7a00,
+                        #ffb347
+                    );
+                    border-radius:10px;
+                "></div>
+
+            </div>
+        `;
+
+
+        chart.appendChild(item);
+    });
 }
+
+
+// ======================================================
+// REPORTS
+// ======================================================
+
 function updateReports() {
 
-    const vargani = JSON.parse(
-        localStorage.getItem("varganiRecords")
-    ) || [];
+    const totalVargani =
+        varganiRecords.reduce(function(total, record) {
 
-    const expenses = JSON.parse(
-        localStorage.getItem("expenseRecords")
-    ) || [];
+            return total +
+                Number(record.amount || 0);
 
-
-    // TOTALS
-
-    const totalVargani = vargani.reduce(
-        (sum, record) => sum + Number(record.amount),
-        0
-    );
-
-    const totalExpenses = expenses.reduce(
-        (sum, record) => sum + Number(record.amount),
-        0
-    );
-
-    const balance = totalVargani - totalExpenses;
-
-    const totalTransactions =
-        vargani.length + expenses.length;
+        }, 0);
 
 
-    // SUMMARY CARDS
+    const totalExpenses =
+        expenseRecords.reduce(function(total, expense) {
+
+            return total +
+                Number(expense.amount || 0);
+
+        }, 0);
+
+
+    const balance =
+        totalVargani - totalExpenses;
+
+
+    const totalEntries =
+        varganiRecords.length +
+        expenseRecords.length;
+
+
+    // ----------------------------------
+    // REPORT SUMMARY CARDS
+    // ----------------------------------
 
     const reportVargani =
         document.getElementById("reportVargani");
@@ -972,164 +1518,346 @@ function updateReports() {
     const reportBalance =
         document.getElementById("reportBalance");
 
-    const reportTransactions =
-        document.getElementById("reportTransactions");
+    const reportEntries =
+        document.getElementById("reportEntries");
 
 
     if (reportVargani) {
-        reportVargani.textContent = `₹${totalVargani}`;
+
+        reportVargani.textContent =
+            formatMoney(totalVargani);
     }
+
 
     if (reportExpenses) {
-        reportExpenses.textContent = `₹${totalExpenses}`;
+
+        reportExpenses.textContent =
+            formatMoney(totalExpenses);
     }
+
 
     if (reportBalance) {
-        reportBalance.textContent = `₹${balance}`;
-    }
 
-    if (reportTransactions) {
-        reportTransactions.textContent =
-            totalTransactions;
+        reportBalance.textContent =
+            formatMoney(balance);
     }
 
 
+    if (reportEntries) {
+
+        reportEntries.textContent =
+            totalEntries;
+    }
+
+
+    // ----------------------------------
+    // FINANCIAL SUMMARY
+    // ----------------------------------
+
+    const summaryVargani =
+        document.getElementById("summaryVargani");
+
+    const summaryExpenses =
+        document.getElementById("summaryExpenses");
+
+    const summaryBalance =
+        document.getElementById("summaryBalance");
+
+
+    if (summaryVargani) {
+
+        summaryVargani.textContent =
+            formatMoney(totalVargani);
+    }
+
+
+    if (summaryExpenses) {
+
+        summaryExpenses.textContent =
+            formatMoney(totalExpenses);
+    }
+
+
+    if (summaryBalance) {
+
+        summaryBalance.textContent =
+            formatMoney(balance);
+    }
+
+
+    // ----------------------------------
     // COLLECTOR REPORT
+    // ----------------------------------
 
     const collectorTable =
         document.getElementById("reportCollectorTable");
 
-    if (collectorTable) {
 
-        const members = [
-            "Harsh Gavhane",
-            "Yash Devre",
-            "Aryan Wagh"
-        ];
+    if (collectorTable) {
 
         collectorTable.innerHTML = "";
 
-        members.forEach(function(member) {
 
-            const records = vargani.filter(
-                record => record.collectedBy === member
-            );
+        const collectors = {};
 
-            const total = records.reduce(
-                (sum, record) =>
-                    sum + Number(record.amount),
-                0
-            );
 
-            const row = document.createElement("tr");
+        varganiRecords.forEach(function(record) {
 
-            row.innerHTML = `
-                <td>${member}</td>
-                <td>₹${total}</td>
-                <td>${records.length}</td>
+            const name =
+                record.collectedBy || "Unknown";
+
+
+            if (!collectors[name]) {
+
+                collectors[name] = {
+                    entries: 0,
+                    amount: 0
+                };
+            }
+
+
+            collectors[name].entries++;
+
+            collectors[name].amount +=
+                Number(record.amount || 0);
+        });
+
+
+        const names =
+            Object.keys(collectors);
+
+
+        if (names.length === 0) {
+
+            collectorTable.innerHTML = `
+                <tr>
+                    <td colspan="3" style="text-align:center;">
+                        No collector data available.
+                    </td>
+                </tr>
             `;
 
-            collectorTable.appendChild(row);
-        });
+        } else {
+
+            names
+                .sort(function(a, b) {
+
+                    return collectors[b].amount -
+                        collectors[a].amount;
+
+                })
+                .forEach(function(name) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${name}
+                        </td>
+
+                        <td>
+                            ${collectors[name].entries}
+                        </td>
+
+                        <td>
+                            ${formatMoney(
+                                collectors[name].amount
+                            )}
+                        </td>
+                    `;
+
+
+                    collectorTable.appendChild(row);
+                });
+        }
     }
 
 
-    // CATEGORY-WISE EXPENSES
+    // ----------------------------------
+    // EXPENSE REPORT
+    // ----------------------------------
 
     const expenseTable =
         document.getElementById("reportExpenseTable");
 
-    if (expenseTable) {
 
-        const categories = [
-            "Decoration",
-            "Prasad/Food",
-            "Sound System",
-            "Lighting",
-            "Ganpati Murti",
-            "Other"
-        ];
+    if (expenseTable) {
 
         expenseTable.innerHTML = "";
 
-        categories.forEach(function(category) {
 
-            const records = expenses.filter(
-                expense => expense.category === category
-            );
+        if (expenseRecords.length === 0) {
 
-            const total = records.reduce(
-                (sum, expense) =>
-                    sum + Number(expense.amount),
-                0
-            );
-
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>${category}</td>
-                <td>₹${total}</td>
-                <td>${records.length}</td>
+            expenseTable.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center;">
+                        No expense data available.
+                    </td>
+                </tr>
             `;
 
-            expenseTable.appendChild(row);
-        });
+        } else {
+
+            expenseRecords
+                .slice()
+                .sort(function(a, b) {
+                    return Number(b.id) - Number(a.id);
+                })
+                .forEach(function(expense) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${expense.expenseName || "-"}
+                        </td>
+
+                        <td>
+                            ${formatMoney(expense.amount)}
+                        </td>
+
+                        <td>
+                            ${expense.date || "-"}
+                        </td>
+
+                        <td>
+                            ${expense.paidBy || "-"}
+                        </td>
+
+                        <td>
+                            ${expense.category || "-"}
+                        </td>
+
+                        <td>
+                            ${expense.paymentMethod || "-"}
+                        </td>
+                    `;
+
+
+                    expenseTable.appendChild(row);
+                });
+        }
     }
 }
 
 
-updateReports();
-// ================================
+// ======================================================
 // ADMIN LOGIN
-// ================================
+// ======================================================
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+    document.getElementById("loginForm");
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", function(event) {
+    loginForm.addEventListener(
+        "submit",
+        function(event) {
 
-        event.preventDefault();
-
-        const username =
-            document.getElementById("loginUsername").value.trim();
-
-        const password =
-            document.getElementById("loginPassword").value;
-
-        const message =
-            document.getElementById("loginMessage");
+            event.preventDefault();
 
 
-        // DEMO ADMIN CREDENTIALS
+            const username =
+                document
+                    .getElementById("loginUsername")
+                    .value
+                    .trim();
 
-        if (username === "Pawan09" && password === "Harsha02") {
 
-            localStorage.setItem("adminLoggedIn", "true");
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
 
-            message.textContent = "Login successful! 🙏";
 
-            setTimeout(function() {
-                window.location.href = "index.html";
-            }, 700);
+            const message =
+                document.getElementById("loginMessage");
 
-        } else {
 
-            message.textContent =
-                "❌ Incorrect username or password.";
+            if (
+                username === "Pawan09" &&
+                password === "Harsha02"
+            ) {
 
+                localStorage.setItem(
+                    "adminLoggedIn",
+                    "true"
+                );
+
+
+                if (message) {
+
+                    message.textContent =
+                        "Login successful! 🙏";
+
+                    message.style.color =
+                        "green";
+                }
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "index.html";
+
+                }, 500);
+
+
+            } else {
+
+                if (message) {
+
+                    message.textContent =
+                        "❌ Incorrect username or password.";
+
+                    message.style.color =
+                        "red";
+                }
+            }
         }
-
-    });
-
+    );
 }
-// ================================
+
+
+// ======================================================
 // LOGOUT
-// ================================
+// ======================================================
 
 function logout() {
 
-    localStorage.removeItem("adminLoggedIn");
+    localStorage.removeItem(
+        "adminLoggedIn"
+    );
 
-    window.location.href = "login.html";
+    window.location.href =
+        "login.html";
 }
+
+
+// ======================================================
+// INITIAL LOAD
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        updateDashboard();
+
+        updateVarganiSummary();
+
+        updateExpenseSummary();
+
+        updateReports();
+
+        displayVarganiRecords();
+
+        displayExpenseRecords();
+    }
+);

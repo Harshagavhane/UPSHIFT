@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pawan Ganesh Mitra Mandal | Expenses</title>
+    <title>Pawan Ganesh Mitra Mandal | Vargani</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -36,11 +36,11 @@
                 Dashboard
             </a>
 
-            <a href="vargani.html">
+            <a href="vargani.html" class="active">
                 Vargani
             </a>
 
-            <a href="expenses.html" class="active">
+            <a href="expenses.html">
                 Expenses
             </a>
 
@@ -61,22 +61,22 @@
 
     <main>
 
-        <!-- PAGE INTRO -->
+        <!-- PAGE HEADER -->
 
         <section class="welcome">
 
             <div>
 
                 <span class="welcome-label">
-                    EXPENSE MANAGEMENT
+                    COLLECTION MANAGEMENT
                 </span>
 
                 <h2>
-                    Mandal Expenses
+                    Vargani Collection
                 </h2>
 
                 <p>
-                    Record and manage every expense with complete transparency.
+                    Record and manage every mandal collection transparently.
                 </p>
 
             </div>
@@ -85,11 +85,11 @@
             <div class="dashboard-date">
 
                 <span>
-                    FINANCIAL CONTROL
+                    COLLECTION STATUS
                 </span>
 
                 <strong>
-                    📊 Track Every Expense
+                    💰 Track Every Rupee
                 </strong>
 
             </div>
@@ -97,39 +97,34 @@
         </section>
 
 
-        <!-- ================= SUMMARY CARDS ================= -->
+        <!-- ================= SUMMARY ================= -->
 
         <section class="cards">
-
-
-            <!-- TOTAL EXPENSES -->
 
             <div class="card">
 
                 <div class="card-top">
 
                     <span class="card-icon">
-                        💸
+                        💰
                     </span>
 
                     <span class="card-label">
-                        TOTAL EXPENSES
+                        TOTAL VARGANI
                     </span>
 
                 </div>
 
-                <h3 id="totalExpenses">
+                <h3 id="totalVargani">
                     ₹0
                 </h3>
 
                 <p>
-                    Total amount spent
+                    Total amount collected
                 </p>
 
             </div>
 
-
-            <!-- ENTRIES -->
 
             <div class="card">
 
@@ -140,23 +135,21 @@
                     </span>
 
                     <span class="card-label">
-                        EXPENSE ENTRIES
+                        COLLECTIONS
                     </span>
 
                 </div>
 
-                <h3 id="totalExpenseEntries">
+                <h3 id="totalVarganiEntries">
                     0
                 </h3>
 
                 <p>
-                    Total expense records
+                    Total collection entries
                 </p>
 
             </div>
 
-
-            <!-- AVERAGE -->
 
             <div class="card">
 
@@ -167,30 +160,28 @@
                     </span>
 
                     <span class="card-label">
-                        AVERAGE EXPENSE
+                        AVERAGE
                     </span>
 
                 </div>
 
-                <h3 id="averageExpense">
+                <h3 id="averageVargani">
                     ₹0
                 </h3>
 
                 <p>
-                    Average spending per entry
+                    Average collection
                 </p>
 
             </div>
 
-
-            <!-- STATUS -->
 
             <div class="card balance-card">
 
                 <div class="card-top">
 
                     <span class="card-icon">
-                        📋
+                        📊
                     </span>
 
                     <span class="card-label">
@@ -204,7 +195,7 @@
                 </h3>
 
                 <p>
-                    Expense tracking enabled
+                    Collection tracking enabled
                 </p>
 
             </div>
@@ -212,7 +203,7 @@
         </section>
 
 
-        <!-- ================= ADD EXPENSE ================= -->
+        <!-- ================= ADD COLLECTION ================= -->
 
         <section class="form-section">
 
@@ -225,11 +216,11 @@
                     </span>
 
                     <h2>
-                        Add Expense
+                        Add Vargani Collection
                     </h2>
 
                     <p>
-                        Enter the expense details below.
+                        Enter the collection details below.
                     </p>
 
                 </div>
@@ -241,24 +232,24 @@
             </div>
 
 
-            <form id="expenseForm">
+            <form id="varganiForm">
 
 
                 <div class="form-grid">
 
 
-                    <!-- EXPENSE NAME -->
+                    <!-- PERSON -->
 
                     <div class="form-group">
 
-                        <label for="expenseName">
-                            Expense Name
+                        <label for="personName">
+                            Person / Shop Name
                         </label>
 
                         <input
                             type="text"
-                            id="expenseName"
-                            placeholder="e.g. Decoration material"
+                            id="personName"
+                            placeholder="Enter person or shop name"
                             required
                         >
 
@@ -269,13 +260,13 @@
 
                     <div class="form-group">
 
-                        <label for="expenseAmount">
+                        <label for="amount">
                             Amount (₹)
                         </label>
 
                         <input
                             type="number"
-                            id="expenseAmount"
+                            id="amount"
                             placeholder="Enter amount"
                             min="1"
                             required
@@ -288,34 +279,34 @@
 
                     <div class="form-group">
 
-                        <label for="expenseDate">
+                        <label for="varganiDate">
                             Date
                         </label>
 
                         <input
                             type="date"
-                            id="expenseDate"
+                            id="varganiDate"
                             required
                         >
 
                     </div>
 
 
-                    <!-- PAID BY -->
+                    <!-- COLLECTED BY -->
 
                     <div class="form-group">
 
-                        <label for="paidBy">
-                            Paid By
+                        <label for="collectedBy">
+                            Collected By
                         </label>
 
                         <select
-                            id="paidBy"
+                            id="collectedBy"
                             required
                         >
 
                             <option value="">
-                                Select member
+                                Select collector
                             </option>
 
                             <option value="Harsh Gavhane">
@@ -335,62 +326,16 @@
                     </div>
 
 
-                    <!-- CATEGORY -->
-
-                    <div class="form-group">
-
-                        <label for="expenseCategory">
-                            Category
-                        </label>
-
-                        <select
-                            id="expenseCategory"
-                            required
-                        >
-
-                            <option value="">
-                                Select category
-                            </option>
-
-                            <option value="Decoration">
-                                Decoration
-                            </option>
-
-                            <option value="Prasad/Food">
-                                Prasad / Food
-                            </option>
-
-                            <option value="Sound System">
-                                Sound System
-                            </option>
-
-                            <option value="Lighting">
-                                Lighting
-                            </option>
-
-                            <option value="Ganpati Murti">
-                                Ganpati Murti
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
                     <!-- PAYMENT -->
 
                     <div class="form-group">
 
-                        <label for="expensePayment">
+                        <label for="paymentMethod">
                             Payment Method
                         </label>
 
                         <select
-                            id="expensePayment"
+                            id="paymentMethod"
                             required
                         >
 
@@ -414,6 +359,24 @@
 
                     </div>
 
+
+                    <!-- RECEIPT -->
+
+                    <div class="form-group">
+
+                        <label for="receiptNo">
+                            Receipt No.
+                        </label>
+
+                        <input
+                            type="text"
+                            id="receiptNo"
+                            placeholder="Auto generated"
+                            readonly
+                        >
+
+                    </div>
+
                 </div>
 
 
@@ -423,7 +386,7 @@
                         type="submit"
                         class="primary-btn"
                     >
-                        💾 Save Expense
+                        💾 Save Collection
                     </button>
 
                     <button
@@ -440,7 +403,7 @@
         </section>
 
 
-        <!-- ================= EXPENSE RECORDS ================= -->
+        <!-- ================= COLLECTION RECORDS ================= -->
 
         <section class="table-section">
 
@@ -453,17 +416,17 @@
                     </span>
 
                     <h2>
-                        Expense Records
+                        Collection Records
                     </h2>
 
                     <p>
-                        View, edit or delete recorded expenses.
+                        View, edit, print or delete collection entries.
                     </p>
 
                 </div>
 
                 <div class="section-icon">
-                    💸
+                    🧾
                 </div>
 
             </div>
@@ -478,7 +441,7 @@
                         <tr>
 
                             <th>
-                                Expense
+                                Person / Shop
                             </th>
 
                             <th>
@@ -490,15 +453,15 @@
                             </th>
 
                             <th>
-                                Paid By
-                            </th>
-
-                            <th>
-                                Category
+                                Collected By
                             </th>
 
                             <th>
                                 Payment
+                            </th>
+
+                            <th>
+                                Receipt
                             </th>
 
                             <th>
@@ -510,7 +473,7 @@
                     </thead>
 
 
-                    <tbody id="expenseTable">
+                    <tbody id="varganiTable">
 
                         <tr>
 
@@ -518,7 +481,8 @@
                                 colspan="7"
                                 class="empty"
                             >
-                                No expense records available.
+                                No collection records available.
+
                             </td>
 
                         </tr>

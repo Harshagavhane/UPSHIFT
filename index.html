@@ -1,215 +1,422 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard - Pawan Ganesh Mitra Mandal</title>
+    <title>Pawan Ganesh Mitra Mandal | Dashboard</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
+    <!-- ================= HEADER ================= -->
 
-    <div class="logo">
-        🙏 Pawan Ganesh Mitra Mandal
-    </div>
+    <header class="main-header">
 
-    <nav>
-    <a href="index.html">Dashboard</a>
-    <a href="vargani.html">Vargani</a>
-    <a href="expenses.html">Expenses</a>
-    <a href="reports.html">Reports</a>
-    <a href="#" onclick="logout()">🚪 Logout</a>
-</nav>
-```html
-<section class="dashboard-charts">
+        <div class="brand">
+            <div class="brand-icon">🙏</div>
 
-    <div class="chart-card">
-
-        <h2>👥 Collector Performance</h2>
-
-        <div id="collectorChart"></div>
-
-    </div>
-
-</section>
-```
-
-</header>
-
-
-<main class="container">
-
-    <h1>Dashboard</h1>
-
-    <p class="subtitle">
-        Pawan Ganesh Mitra Mandal Financial Overview
-    </p>
-
-
-    <!-- Financial Summary -->
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>Total Vargani</h3>
-            <p id="dashboardVargani">₹0</p>
+            <div>
+                <h1>Pawan Ganesh Mitra Mandal</h1>
+                <span>Financial Management System</span>
+            </div>
         </div>
 
+        <nav>
 
-        <div class="card">
-            <h3>Total Expenses</h3>
-            <p id="dashboardExpenses">₹0</p>
-        </div>
+            <a href="index.html" class="active">
+                Dashboard
+            </a>
+
+            <a href="vargani.html">
+                Vargani
+            </a>
+
+            <a href="expenses.html">
+                Expenses
+            </a>
+
+            <a href="reports.html">
+                Reports
+            </a>
+
+            <a href="#" onclick="logout()">
+                🚪 Logout
+            </a>
+
+        </nav>
+
+    </header>
 
 
-        <div class="card">
-            <h3>Current Balance</h3>
-            <p id="dashboardBalance">₹0</p>
-        </div>
+    <!-- ================= MAIN ================= -->
 
+    <main>
 
-        <div class="card">
-            <h3>Total Entries</h3>
-            <p id="dashboardEntries">0</p>
-        </div>
+        <!-- PAGE INTRO -->
 
-    </div>
+        <section class="welcome">
 
+            <div>
 
-    <!-- Collector Performance -->
+                <span class="welcome-label">
+                    MANDAL ADMIN
+                </span>
 
-    <section class="table-section">
+                <h2>
+                    Dashboard
+                </h2>
 
-        <h2>👥 Collection by Member</h2>
+                <p>
+                    Monitor vargani, expenses and current financial balance.
+                </p>
 
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Member</th>
-                        <th>Total Collected</th>
-                        <th>Entries</th>
-                    </tr>
-
-                </thead>
-
-```html
-<section class="dashboard-charts">
-
-    <div class="chart-card">
-        <h2>💰 Vargani vs Expenses</h2>
-
-        <div class="bar-chart">
-
-            <div class="bar-item">
-                <span>Vargani</span>
-                <div class="bar-track">
-                    <div id="varganiBar" class="bar-fill"></div>
-                </div>
-                <strong id="varganiChartAmount">₹0</strong>
             </div>
 
-            <div class="bar-item">
-                <span>Expenses</span>
-                <div class="bar-track">
-                    <div id="expenseBar" class="bar-fill"></div>
-                </div>
-                <strong id="expenseChartAmount">₹0</strong>
+            <div class="dashboard-date">
+                <span>Financial Overview</span>
+                <strong>🙏 Ganpati Bappa Morya</strong>
             </div>
 
+        </section>
+
+
+        <!-- ================= SUMMARY CARDS ================= -->
+
+        <section class="cards">
+
+            <div class="card financial-card">
+
+                <div class="card-top">
+                    <span class="card-icon">💰</span>
+                    <span class="card-label">TOTAL VARGANI</span>
+                </div>
+
+                <h3 id="dashboardVargani">
+                    ₹0
+                </h3>
+
+                <p>
+                    Total amount collected
+                </p>
+
+            </div>
+
+
+            <div class="card expense-card">
+
+                <div class="card-top">
+                    <span class="card-icon">💸</span>
+                    <span class="card-label">TOTAL EXPENSES</span>
+                </div>
+
+                <h3 id="dashboardExpenses">
+                    ₹0
+                </h3>
+
+                <p>
+                    Total amount spent
+                </p>
+
+            </div>
+
+
+            <div class="card balance-card">
+
+                <div class="card-top">
+                    <span class="card-icon">📊</span>
+                    <span class="card-label">CURRENT BALANCE</span>
+                </div>
+
+                <h3 id="dashboardBalance">
+                    ₹0
+                </h3>
+
+                <p>
+                    Available mandal balance
+                </p>
+
+            </div>
+
+
+            <div class="card entries-card">
+
+                <div class="card-top">
+                    <span class="card-icon">🧾</span>
+                    <span class="card-label">TOTAL ENTRIES</span>
+                </div>
+
+                <h3 id="dashboardEntries">
+                    0
+                </h3>
+
+                <p>
+                    Collection records
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CHARTS ================= -->
+
+        <section class="dashboard-charts">
+
+
+            <!-- FINANCIAL OVERVIEW -->
+
+            <div class="chart-card">
+
+                <div class="chart-heading">
+
+                    <div class="chart-title">
+
+                        <div class="chart-icon">
+                            💰
+                        </div>
+
+                        <div>
+                            <h2>Financial Overview</h2>
+
+                            <p>
+                                Vargani collected vs money spent
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bar-chart">
+
+                    <div class="bar-item">
+
+                        <span>Vargani</span>
+
+                        <div class="bar-track">
+                            <div
+                                id="varganiBar"
+                                class="bar-fill">
+                            </div>
+                        </div>
+
+                        <strong id="varganiBarValue">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="bar-item">
+
+                        <span>Expenses</span>
+
+                        <div class="bar-track">
+                            <div
+                                id="expenseBar"
+                                class="bar-fill expense-fill">
+                            </div>
+                        </div>
+
+                        <strong id="expenseBarValue">
+                            ₹0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COLLECTOR PERFORMANCE -->
+
+            <div class="chart-card">
+
+                <div class="chart-heading">
+
+                    <div class="chart-title">
+
+                        <div class="chart-icon">
+                            👥
+                        </div>
+
+                        <div>
+                            <h2>Collector Performance</h2>
+
+                            <p>
+                                Member-wise collection summary
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div id="collectorChart">
+
+                    <!-- JavaScript will generate collector bars here -->
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= COLLECTION BY MEMBER ================= -->
+
+        <section class="table-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        COLLECTION
+                    </span>
+
+                    <h2>
+                        Collection by Member
+                    </h2>
+
+                    <p>
+                        Total amount collected by each member
+                    </p>
+
+                </div>
+
+                <div class="section-icon">
+                    👥
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Collector</th>
+                            <th>Total Collected</th>
+                            <th>Entries</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="collectorTable">
+
+                        <tr>
+                            <td colspan="3" class="empty">
+                                No collection data available.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RECENT VARGANI ================= -->
+
+        <section class="table-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        ACTIVITY
+                    </span>
+
+                    <h2>
+                        Recent Vargani
+                    </h2>
+
+                    <p>
+                        Latest collection entries
+                    </p>
+
+                </div>
+
+                <div class="section-icon">
+                    🧾
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Person / Shop</th>
+                            <th>Amount</th>
+                            <th>Collected By</th>
+                            <th>Date</th>
+                            <th>Receipt</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recentVargani">
+
+                        <tr>
+                            <td colspan="5" class="empty">
+                                No collection records available.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-brand">
+            🙏 Pawan Ganesh Mitra Mandal
         </div>
-    </div>
 
-</section>
-```
+        <p>
+            Transparent collection & expense management system
+        </p>
 
-                <tbody id="collectorTable">
+        <span>
+            © 2026 Pawan Ganesh Mitra Mandal
+        </span>
 
-                    <tr>
-                        <td>Harsh Gavhane</td>
-                        <td>₹0</td>
-                        <td>0</td>
-                    </tr>
-
-                    <tr>
-                        <td>Yash Devre</td>
-                        <td>₹0</td>
-                        <td>0</td>
-                    </tr>
-
-                    <tr>
-                        <td>Aryan Wagh</td>
-                        <td>₹0</td>
-                        <td>0</td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
+    </footer>
 
 
-    <!-- Recent Vargani -->
+    <!-- ================= JAVASCRIPT ================= -->
 
-    <section class="table-section">
-
-        <h2>📋 Recent Vargani</h2>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Collected By</th>
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="recentVargani">
-
-                    <tr>
-                        <td colspan="4">
-                            No records yet.
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<footer>
-
-    <p>
-        © 2026 Pawan Ganesh Mitra Mandal
-    </p>
-
-</footer>
-
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
