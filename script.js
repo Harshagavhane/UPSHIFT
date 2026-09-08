@@ -1103,7 +1103,7 @@ if (loginForm) {
 
         // DEMO ADMIN CREDENTIALS
 
-        if (username === "admin" && password === "ganpati123") {
+        if (username === "Pawan09" && password === "Harsha02") {
 
             localStorage.setItem("adminLoggedIn", "true");
 
