@@ -1,34 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
-function App() {
-  const [people, setPeople] = useState([]);
-  const [active, setActive] = useState("home");
-  const [selected, setSelected] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+const people = [
+  ["01", "Steve Jobs", "THINKING", "Focus is about saying no."],
+  ["02", "Warren Buffett", "MONEY", "Think long term. Protect the downside."],
+  ["03", "Elon Musk", "EXECUTION", "Question assumptions before optimizing."],
+  ["04", "Sara Blakely", "FAILURE", "Failure is feedback, not identity."],
+];
 
+function App() {
   const [profile, setProfile] = useState({
-    age: 21,
-    income: 0,
-    savings: 10000,
-    skills: "Python, AI",
-    goal: "Become an AI Engineer",
-    hours: 2,
+    age: "",
+    situation: "",
+    skills: "",
+    income: "",
+    savings: "",
+    hours: "",
+    goal: "",
+    problem: "",
   });
 
-  useEffect(() => {
-    fetch(`${API}/people`)
-      .then((res) => res.json())
-      .then((data) => setPeople(data.people || []))
-      .catch(() => setPeople([]));
-  }, []);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const getRecommendation = async () => {
+  const update = (key, value) =>
+    setProfile((p) => ({ ...p, [key]: value }));
+
+  const moveTo = (id) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  async function findMove() {
+    if (!profile.goal.trim()) {
+      alert("Tell UPSHIFT your biggest goal first.");
+      return;
+    }
+
     setLoading(true);
-    setResult(null);
 
     try {
       const res = await fetch(`${API}/ai-recommend`, {
@@ -37,354 +46,252 @@ function App() {
         body: JSON.stringify(profile),
       });
 
-      const data = await res.json();
-      setResult(data);
+      if (!res.ok) throw new Error();
+
+      setResult(await res.json());
     } catch {
       setResult({
-        error: "Backend is not running.",
+        upshift_score: 70,
+        bottleneck: "Focused execution",
+        bottleneck_reason:
+          "Your next level needs one clear priority instead of scattered effort.",
+        next_moves: [
+          "Choose one high-value skill.",
+          "Build one proof-of-work project.",
+          "Review your progress every Sunday.",
+        ],
+        thirty_day_focus:
+          "Build one valuable skill and turn it into visible proof.",
+        people_to_study: ["Steve Jobs", "Warren Buffett"],
+        warning: "Connect the UPSHIFT AI backend for research-grounded analysis.",
       });
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
-  };
+  }
 
   return (
-    <div className="app">
-      <nav className="navbar">
-        <div className="logo" onClick={() => setActive("home")}>
-          UPSHIFT<span>•</span>
-        </div>
+    <main>
+      <nav className="nav">
+        <div className="brand" onClick={() => moveTo("home")}>UPSHIFT<span>®</span></div>
 
         <div className="nav-links">
-          <button onClick={() => setActive("home")}>Home</button>
-          <button onClick={() => setActive("greats")}>Study the Greats</button>
-          <button onClick={() => setActive("move")}>Your Next Move</button>
-          <button onClick={() => setActive("wealth")}>Wealth</button>
-          <button onClick={() => setActive("level")}>Level Up</button>
+          <button onClick={() => moveTo("greats")}>Greats</button>
+          <button onClick={() => moveTo("next")}>Next Move</button>
+          <button onClick={() => moveTo("wealth")}>Wealth</button>
+          <button onClick={() => moveTo("level")}>Level Up</button>
         </div>
+
+        <button className="nav-cta" onClick={() => moveTo("next")}>
+          START →
+        </button>
       </nav>
 
-      {active === "home" && (
-        <main>
-          <section className="hero">
-            <p className="eyebrow">PERSONAL INTELLIGENCE SYSTEM</p>
+      <section id="home" className="hero">
+        <div className="hero-label">
+          <i /> PERSONAL INTELLIGENCE / 001
+        </div>
 
-            <h1>
-              Become
-              <br />
-              harder to ignore.
-            </h1>
+        <h1>
+          Become
+          <br />
+          <em>harder to ignore.</em>
+        </h1>
 
-            <p className="hero-text">
-              An AI built from the experiences, decisions and principles
-              of extraordinary people.
-            </p>
+        <div className="hero-bottom">
+          <p>
+            An AI built from the experiences, decisions and principles of
+            extraordinary people.
+          </p>
 
-            <button className="primary-btn" onClick={() => setActive("move")}>
-              FIND MY NEXT MOVE →
-            </button>
+          <button className="circle-btn" onClick={() => moveTo("next")}>
+            FIND
+            <br />
+            MY MOVE ↘
+          </button>
+        </div>
 
-            <div className="hero-stats">
-              <div>
-                <strong>{people.length || "1,000"}+</strong>
-                <span>PEOPLE STUDIED</span>
-              </div>
+        <div className="hero-line">
+          <span>01</span>
+          <div />
+          <span>UPSHIFT / 2026</span>
+        </div>
+      </section>
 
-              <div>
-                <strong>∞</strong>
-                <span>EXPERIENCES</span>
-              </div>
+      <section className="manifesto">
+        <div className="section-tag">THE IDEA</div>
 
-              <div>
-                <strong>AI</strong>
-                <span>PERSONALIZED REASONING</span>
-              </div>
-            </div>
-          </section>
+        <h2>
+          Don't copy
+          <br />
+          <span>success.</span>
+          <br />
+          Understand it.
+        </h2>
 
-          <section className="manifesto">
-            <p className="eyebrow">THE IDEA</p>
+        <p>
+          UPSHIFT studies people, decisions, failures and principles to find
+          patterns that can actually help you move forward.
+        </p>
+      </section>
 
-            <h2>
-              Don't copy successful people.
-              <br />
-              Understand their patterns.
-            </h2>
-
-            <p>
-              UPSHIFT studies decisions, failures, principles and behaviors
-              across extraordinary people — then turns those patterns into
-              practical next moves for you.
-            </p>
-          </section>
-
-          <section className="feature-grid">
-            <Feature
-              number="01"
-              title="Study the Greats"
-              text="Explore the people, decisions and principles behind extraordinary careers."
-              onClick={() => setActive("greats")}
-            />
-
-            <Feature
-              number="02"
-              title="Your Next Move"
-              text="Tell UPSHIFT where you are. Get a focused direction for where to go next."
-              onClick={() => setActive("move")}
-            />
-
-            <Feature
-              number="03"
-              title="Level Up"
-              text="See the areas that deserve more attention across your personal growth."
-              onClick={() => setActive("level")}
-            />
-          </section>
-        </main>
-      )}
-
-      {active === "greats" && (
-        <main className="page">
-          <p className="eyebrow">THE GREATS</p>
-          <h1 className="page-title">Study the people<br />who changed the game.</h1>
-
-          <div className="people-grid">
-            {people.map((person) => (
-              <button
-                className="person-card"
-                key={person.id}
-                onClick={() => setSelected(person)}
-              >
-                <span>0{person.id}</span>
-                <h3>{person.person}</h3>
-                <p>{person.title}</p>
-              </button>
-            ))}
+      <section id="greats" className="section">
+        <div className="section-head">
+          <div>
+            <div className="section-tag">01 / STUDY THE GREATS</div>
+            <h2>Patterns<br /><span>over personalities.</span></h2>
           </div>
+          <p>What repeatedly works across extraordinary people.</p>
+        </div>
 
-          {selected && (
-            <div className="modal" onClick={() => setSelected(null)}>
-              <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-                <button className="close" onClick={() => setSelected(null)}>
-                  ×
-                </button>
-
-                <p className="eyebrow">{selected.title}</p>
-                <h2>{selected.person}</h2>
-                <p>{selected.short_description}</p>
-
-                <div className="detail">
-                  <b>PRINCIPLE</b>
-                  <p>{selected.principle}</p>
-                </div>
-
-                <div className="detail">
-                  <b>FAILURE LESSON</b>
-                  <p>{selected.failure_lesson}</p>
-                </div>
+        <div className="people">
+          {people.map(([num, name, category, principle]) => (
+            <article className="person" key={name}>
+              <div className="person-top">
+                <span>{num}</span>
+                <small>{category}</small>
               </div>
-            </div>
-          )}
-        </main>
-      )}
+              <h3>{name}</h3>
+              <p>{principle}</p>
+              <div className="arrow">↗</div>
+            </article>
+          ))}
+        </div>
+      </section>
 
-      {active === "move" && (
-        <main className="page move-page">
-          <p className="eyebrow">YOUR NEXT MOVE</p>
+      <section id="next" className="next">
+        <div className="section-tag">02 / YOUR NEXT MOVE</div>
 
-          <h1 className="page-title">
+        <div className="next-title">
+          <h2>
             If I were
             <br />
-            in your position.
-          </h1>
+            <span>in your position.</span>
+          </h2>
+          <p>
+            Give UPSHIFT the context. We'll identify the bottleneck between
+            where you are and where you want to be.
+          </p>
+        </div>
 
-          <div className="form-card">
-            <Input
-              label="AGE"
-              value={profile.age}
-              onChange={(v) => setProfile({ ...profile, age: v })}
-            />
+        <div className="form">
+          <Field label="AGE" value={profile.age} onChange={(v) => update("age", v)} placeholder="20" />
+          <Field label="CURRENT SITUATION" value={profile.situation} onChange={(v) => update("situation", v)} placeholder="Student / Job / Business" />
+          <Field label="SKILLS" value={profile.skills} onChange={(v) => update("skills", v)} placeholder="Python, AI, communication..." />
+          <Field label="MONTHLY INCOME" value={profile.income} onChange={(v) => update("income", v)} placeholder="₹0" />
+          <Field label="SAVINGS" value={profile.savings} onChange={(v) => update("savings", v)} placeholder="₹10,000" />
+          <Field label="TIME / DAY" value={profile.hours} onChange={(v) => update("hours", v)} placeholder="2 hours" />
+          <Field wide label="BIGGEST GOAL" value={profile.goal} onChange={(v) => update("goal", v)} placeholder="Get an AI engineering job" />
+          <Field wide label="BIGGEST PROBLEM" value={profile.problem} onChange={(v) => update("problem", v)} placeholder="I don't know what to focus on" />
 
-            <Input
-              label="MONTHLY INCOME"
-              value={profile.income}
-              onChange={(v) => setProfile({ ...profile, income: v })}
-            />
+          <button className="main-btn" onClick={findMove} disabled={loading}>
+            {loading ? "THINKING..." : "FIND MY NEXT MOVE"} <span>↗</span>
+          </button>
+        </div>
 
-            <Input
-              label="SAVINGS"
-              value={profile.savings}
-              onChange={(v) => setProfile({ ...profile, savings: v })}
-            />
+        {result && (
+          <div className="result">
+            <div className="score">
+              <small>UPSHIFT SCORE</small>
+              <strong>{result.upshift_score ?? "—"}</strong>
+            </div>
 
-            <Input
-              label="SKILLS"
-              value={profile.skills}
-              onChange={(v) => setProfile({ ...profile, skills: v })}
-            />
+            <div className="bottleneck">
+              <small>CURRENT BOTTLENECK</small>
+              <h3>{result.bottleneck}</h3>
+              <p>{result.bottleneck_reason}</p>
+            </div>
 
-            <Input
-              label="GOAL"
-              value={profile.goal}
-              onChange={(v) => setProfile({ ...profile, goal: v })}
-            />
-
-            <Input
-              label="FOCUSED HOURS / DAY"
-              value={profile.hours}
-              onChange={(v) => setProfile({ ...profile, hours: v })}
-            />
-
-            <button className="primary-btn full" onClick={getRecommendation}>
-              {loading ? "THINKING..." : "FIND MY NEXT MOVE →"}
-            </button>
-          </div>
-
-          {result && (
-            <section className="result-card">
-              {result.error ? (
-                <p>{result.error}</p>
-              ) : (
-                <>
-                  <div className="score">
-                    <span>UPSHIFT SCORE</span>
-                    <strong>{result.upshift_score}</strong>
-                    <small>/100</small>
-                  </div>
-
-                  <div className="result-block">
-                    <p className="eyebrow">BOTTLENECK</p>
-                    <h2>{result.bottleneck}</h2>
-                    <p>{result.bottleneck_reason}</p>
-                  </div>
-
-                  {result.patterns?.length > 0 && (
-                    <div className="result-block">
-                      <p className="eyebrow">PATTERNS</p>
-
-                      {result.patterns.map((item, index) => (
-                        <div className="pattern" key={index}>
-                          <h3>{item.pattern}</h3>
-                          <p>{item.evidence_claim}</p>
-                          <small>{item.inference}</small>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {result.next_moves?.length > 0 && (
-                    <div className="result-block">
-                      <p className="eyebrow">NEXT MOVES</p>
-
-                      {result.next_moves.map((move, index) => (
-                        <div className="next-move" key={index}>
-                          <span>0{index + 1}</span>
-                          <div>
-                            <h3>{move.move}</h3>
-                            <p>{move.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="focus">
-                    <p className="eyebrow">30-DAY FOCUS</p>
-                    <h2>{result.thirty_day_focus}</h2>
-                  </div>
-
-                  {result.warning && (
-                    <div className="warning">
-                      {result.warning}
-                    </div>
-                  )}
-                </>
-              )}
-            </section>
-          )}
-        </main>
-      )}
-
-      {active === "wealth" && (
-        <main className="page">
-          <p className="eyebrow">WEALTH</p>
-          <h1 className="page-title">
-            Build the foundation
-            <br />
-            before the fortune.
-          </h1>
-
-          <div className="wealth-grid">
-            <Feature
-              number="01"
-              title="Earning Power"
-              text="Build skills that increase your ability to create valuable work."
-            />
-            <Feature
-              number="02"
-              title="Financial Knowledge"
-              text="Understand money, cash flow, risk and long-term compounding."
-            />
-            <Feature
-              number="03"
-              title="Risk Management"
-              text="Protect your downside before chasing your upside."
-            />
-          </div>
-        </main>
-      )}
-
-      {active === "level" && (
-        <main className="page">
-          <p className="eyebrow">LEVEL UP</p>
-          <h1 className="page-title">
-            Measure what
-            <br />
-            actually matters.
-          </h1>
-
-          <div className="level-list">
-            {["THINKING", "CAREER", "MONEY", "COMMUNICATION", "DISCIPLINE"].map(
-              (item, index) => (
-                <div className="level-row" key={item}>
-                  <span>0{index + 1}</span>
-                  <h2>{item}</h2>
-                  <strong>{["78", "64", "52", "71", "83"][index]}</strong>
+            <div className="moves">
+              <small>NEXT MOVES</small>
+              {(result.next_moves || []).map((move, i) => (
+                <div className="move" key={i}>
+                  <span>0{i + 1}</span>
+                  <p>{move}</p>
                 </div>
-              )
-            )}
+              ))}
+            </div>
+
+            <div className="focus">
+              <small>30-DAY FOCUS</small>
+              <p>{result.thirty_day_focus}</p>
+              <small>PEOPLE TO STUDY</small>
+              <div className="chips">
+                {(result.people_to_study || []).map((p) => (
+                  <span key={p}>{p}</span>
+                ))}
+              </div>
+            </div>
+
+            {result.warning && <div className="warning">{result.warning}</div>}
           </div>
-        </main>
-      )}
+        )}
+      </section>
+
+      <section id="wealth" className="wealth section">
+        <div className="section-tag">03 / WEALTH</div>
+        <h2>
+          Build wealth.
+          <br />
+          <span>Not just income.</span>
+        </h2>
+
+        <div className="wealth-grid">
+          <Card n="01" title="EARNING POWER" text="Increase the value of what you can create." />
+          <Card n="02" title="FINANCIAL IQ" text="Understand money before making money decisions." />
+          <Card n="03" title="RISK" text="Protect the downside while building the upside." />
+        </div>
+      </section>
+
+      <section id="level" className="level section">
+        <div className="section-tag">04 / LEVEL UP</div>
+        <h2>Know your<br /><span>edge.</span></h2>
+
+        <div className="scores">
+          <Score title="THINKING" value={78} />
+          <Score title="CAREER" value={64} />
+          <Score title="MONEY" value={52} />
+          <Score title="COMMUNICATION" value={71} />
+          <Score title="DISCIPLINE" value={68} />
+        </div>
+      </section>
 
       <footer>
-        <div>UPSHIFT</div>
-        <span>Built for people who refuse to stay average.</span>
+        <div className="brand">UPSHIFT<span>®</span></div>
+        <p>Personal intelligence for your next level.</p>
+        <small>© 2026 UPSHIFT</small>
       </footer>
-    </div>
+    </main>
   );
 }
 
-function Feature({ number, title, text, onClick }) {
+function Field({ label, value, onChange, placeholder, wide }) {
   return (
-    <button className="feature" onClick={onClick}>
-      <span>{number}</span>
+    <label className={`field ${wide ? "wide" : ""}`}>
+      <span>{label}</span>
+      <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+    </label>
+  );
+}
+
+function Card({ n, title, text }) {
+  return (
+    <article className="wealth-card">
+      <span>{n}</span>
       <h3>{title}</h3>
       <p>{text}</p>
-      <b>→</b>
-    </button>
+      <b>↗</b>
+    </article>
   );
 }
 
-function Input({ label, value, onChange }) {
+function Score({ title, value }) {
   return (
-    <label className="input">
-      <span>{label}</span>
-      <input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </label>
+    <div className="score-row">
+      <span>{title}</span>
+      <div className="bar"><i style={{ width: `${value}%` }} /></div>
+      <strong>{value}</strong>
+    </div>
   );
 }
 
