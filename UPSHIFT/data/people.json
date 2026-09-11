@@ -1,0 +1,459 @@
+[
+  {
+    "id": 1,
+    "person": "Warren Buffett",
+    "title": "Investor & Capital Allocator",
+    "category": ["Money", "Decision Making", "Patience"],
+    "short_description": "A long-term investor known for disciplined capital allocation, patience, risk management and compounding.",
+    "principle": "Wait for opportunities where the potential reward justifies the risk instead of constantly acting.",
+    "experience": "Buffett built Berkshire Hathaway through decades of investing, acquiring businesses and allocating capital with a long-term ownership mindset.",
+    "decision_style": ["Long-term oriented", "Evidence driven", "Patient", "Selective", "Risk conscious"],
+    "failure_lesson": "Mistakes are part of investing and business. The important skill is learning from mistakes and avoiding repeated errors.",
+    "communication": "Direct, simple and focused on explaining complicated financial ideas in understandable language.",
+    "wealth_lesson": "Building wealth is strongly connected to disciplined capital allocation, compounding, patience and controlling unnecessary risk.",
+    "pattern_tags": ["long_term_thinking", "patience", "capital_allocation", "risk_management", "compounding", "discipline", "simple_thinking"],
+    "source_type": ["shareholder_letters", "company_material", "public_interviews"],
+    "sources": [
+      {
+        "name": "Berkshire Hathaway Shareholder Letters",
+        "type": "primary",
+        "url": "https://www.berkshirehathaway.com/letters/letters.html"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 2,
+    "person": "Jeff Bezos",
+    "title": "Founder of Amazon",
+    "category": ["Business", "Customer Obsession", "Long-Term Thinking", "Innovation"],
+    "short_description": "Founder of Amazon whose philosophy emphasizes customers, long-term decisions, experimentation and scalable systems.",
+    "principle": "Make decisions based on long-term customer value rather than short-term reactions.",
+    "experience": "Amazon invested heavily in customers, infrastructure, technology and new businesses while accepting that some experiments would fail.",
+    "decision_style": ["Customer focused", "Long-term oriented", "Experimental", "High conviction", "Data informed"],
+    "failure_lesson": "Large experiments can fail, but avoiding experimentation altogether can create an even larger long-term disadvantage.",
+    "communication": "Uses written principles, metrics, narratives and clear decision frameworks.",
+    "wealth_lesson": "Long-term value creation can require sacrificing short-term results to build durable competitive advantages.",
+    "pattern_tags": ["customer_obsession", "long_term_thinking", "experimentation", "high_standards", "scale", "innovation", "systems_thinking"],
+    "source_type": ["shareholder_letters", "company_material", "public_interviews"],
+    "sources": [
+      {
+        "name": "Amazon 1997 Shareholder Letter",
+        "type": "primary",
+        "url": "https://www.aboutamazon.com/news/company-news/amazons-original-1997-letter-to-shareholders"
+      },
+      {
+        "name": "Amazon Shareholder Letters",
+        "type": "primary",
+        "url": "https://www.aboutamazon.com/about-us/shareholder-letters"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 3,
+    "person": "Sara Blakely",
+    "title": "Founder of Spanx",
+    "category": ["Entrepreneurship", "Sales", "Resilience", "Problem Solving"],
+    "short_description": "Entrepreneur who founded Spanx by identifying a specific consumer problem and persistently developing a solution.",
+    "principle": "Start with a real problem, stay persistent and be willing to hear repeated rejection.",
+    "experience": "Blakely developed the original Spanx concept after modifying hosiery to solve a clothing problem, then developed prototypes and built the business through persistent selling.",
+    "decision_style": ["Problem focused", "Persistent", "Customer oriented", "Resourceful", "Action oriented"],
+    "failure_lesson": "Rejection does not automatically mean the underlying idea is wrong. Useful feedback should be separated from discouragement.",
+    "communication": "Uses simple storytelling, personal experiences and relatable explanations.",
+    "wealth_lesson": "A valuable business can begin with a narrow problem when the founder understands the customer and keeps improving the solution.",
+    "pattern_tags": ["problem_solving", "persistence", "sales", "customer_understanding", "resourcefulness", "resilience", "action_bias"],
+    "source_type": ["company_material", "institutional_profile", "public_interviews"],
+    "sources": [
+      {
+        "name": "SPANX Company Story",
+        "type": "primary",
+        "url": "https://spanx.com/en-gr/pages/about-us"
+      },
+      {
+        "name": "National Inventors Hall of Fame - Sara Blakely",
+        "type": "institutional",
+        "url": "https://www.invent.org/inductees/sara-blakely"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 4,
+    "person": "Bill Gates",
+    "title": "Microsoft Co-Founder & Investor",
+    "category": ["Technology", "Learning", "Business", "Systems"],
+    "short_description": "Technology entrepreneur and investor known for software entrepreneurship, analytical thinking, intensive learning and long-term problem solving.",
+    "principle": "Deep understanding and continuous learning can create an advantage when solving complex problems.",
+    "experience": "Gates co-founded Microsoft during the personal-computing era and helped build the company around software and operating-system platforms.",
+    "decision_style": ["Analytical", "Technology focused", "Learning oriented", "Long-term oriented", "Evidence based"],
+    "failure_lesson": "Successful organizations still need to adapt as technology, competition and markets change.",
+    "communication": "Often breaks complex subjects into frameworks, questions and evidence.",
+    "wealth_lesson": "Technology businesses can create enormous leverage when scalable products reach large markets.",
+    "pattern_tags": ["learning", "technology", "leverage", "analytical_thinking", "scale", "systems_thinking", "adaptability"],
+    "source_type": ["company_history", "public_interviews", "foundation_material"],
+    "sources": [
+      {
+        "name": "Gates Notes",
+        "type": "primary",
+        "url": "https://www.gatesnotes.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 5,
+    "person": "Oprah Winfrey",
+    "title": "Media Entrepreneur & Communicator",
+    "category": ["Communication", "Media", "Personal Brand", "Leadership"],
+    "short_description": "Media entrepreneur whose career demonstrates the power of communication, storytelling, audience trust and personal brand.",
+    "principle": "Strong communication becomes more powerful when it creates genuine connection with the audience.",
+    "experience": "Winfrey built a major media career through television, interviewing, storytelling and eventually a broader media and business ecosystem.",
+    "decision_style": ["Audience focused", "Story driven", "Emotionally intelligent", "Relationship oriented", "People focused"],
+    "failure_lesson": "A setback does not have to define a career when it is followed by adaptation and continued execution.",
+    "communication": "Known for active listening, storytelling and asking questions that encourage people to reveal meaningful experiences.",
+    "wealth_lesson": "Trust and audience relationships can become valuable business assets when developed over a long period.",
+    "pattern_tags": ["communication", "storytelling", "trust", "personal_brand", "audience", "emotional_intelligence", "relationship_building"],
+    "source_type": ["public_interviews", "company_material", "media_history"],
+    "sources": [
+      {
+        "name": "Harpo",
+        "type": "company",
+        "url": "https://www.harpo.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 6,
+    "person": "Elon Musk",
+    "title": "Technology Entrepreneur & Industrialist",
+    "category": ["Technology", "Innovation", "Risk", "Engineering"],
+    "short_description": "Technology entrepreneur associated with electric vehicles, space technology, energy and software.",
+    "principle": "Start from fundamental constraints and work backward from the desired outcome.",
+    "experience": "Musk has repeatedly entered technically difficult industries and pursued large-scale engineering problems with high levels of risk.",
+    "decision_style": ["First-principles oriented", "High risk tolerance", "Engineering focused", "Fast moving", "Ambitious"],
+    "failure_lesson": "Major technological projects can experience repeated failures before achieving reliable execution.",
+    "communication": "Often communicates through direct statements, technical explanations and ambitious future-oriented narratives.",
+    "wealth_lesson": "Technology and engineering can create significant leverage when combined with large markets and scalable infrastructure.",
+    "pattern_tags": ["first_principles", "risk_taking", "innovation", "engineering", "ambition", "scale", "iteration", "long_term_thinking"],
+    "source_type": ["company_material", "public_interviews", "public_statements"],
+    "sources": [
+      {
+        "name": "Tesla Investor Relations",
+        "type": "primary",
+        "url": "https://ir.tesla.com/"
+      },
+      {
+        "name": "SpaceX",
+        "type": "primary",
+        "url": "https://www.spacex.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 7,
+    "person": "Mark Zuckerberg",
+    "title": "Meta Founder & CEO",
+    "category": ["Technology", "Product", "Scale", "Innovation"],
+    "short_description": "Technology entrepreneur who built Facebook and helped scale a global technology platform.",
+    "principle": "Build products that solve meaningful problems for large numbers of people and improve them continuously.",
+    "experience": "Zuckerberg developed Facebook from a university project into a global technology company while repeatedly adapting to changing user behavior and technology.",
+    "decision_style": ["Product focused", "Fast iterating", "Long-term oriented", "Technology driven", "Scale focused"],
+    "failure_lesson": "Products and strategies need to evolve as user behavior, technology and competition change.",
+    "communication": "Uses product vision, metrics and long-term technology narratives to communicate direction.",
+    "wealth_lesson": "Digital products can scale globally with relatively low marginal distribution costs.",
+    "pattern_tags": ["product_thinking", "scale", "innovation", "iteration", "technology", "long_term_thinking", "network_effects"],
+    "source_type": ["company_material", "public_interviews", "company_history"],
+    "sources": [
+      {
+        "name": "Meta Investor Relations",
+        "type": "primary",
+        "url": "https://investor.atmeta.com/"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 8,
+    "person": "Richard Branson",
+    "title": "Founder & Entrepreneur",
+    "category": ["Entrepreneurship", "Brand", "Leadership", "Customer Experience"],
+    "short_description": "Entrepreneur known for building the Virgin brand across multiple industries and emphasizing customer experience and company culture.",
+    "principle": "Strong brands can be built by understanding customers, empowering people and creating memorable experiences.",
+    "experience": "Branson expanded the Virgin brand from music into airlines, travel and other businesses by applying branding and customer-focused principles.",
+    "decision_style": ["Opportunity focused", "Customer oriented", "Brand conscious", "Delegation oriented", "Experimental"],
+    "failure_lesson": "Entering new industries creates uncertainty and failures, making adaptability and learning essential.",
+    "communication": "Uses storytelling, personal branding and accessible communication to connect with audiences.",
+    "wealth_lesson": "A strong brand can become an asset that supports expansion into multiple markets.",
+    "pattern_tags": ["branding", "customer_experience", "delegation", "entrepreneurship", "risk_taking", "storytelling", "opportunity_recognition"],
+    "source_type": ["company_material", "public_interviews", "company_history"],
+    "sources": [
+      {
+        "name": "Virgin",
+        "type": "primary",
+        "url": "https://www.virgin.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 9,
+    "person": "Michael Bloomberg",
+    "title": "Entrepreneur, Business Leader & Philanthropist",
+    "category": ["Business", "Data", "Finance", "Entrepreneurship"],
+    "short_description": "Entrepreneur who built Bloomberg into a major financial information and data business.",
+    "principle": "Information becomes valuable when it helps professionals make better decisions faster.",
+    "experience": "Bloomberg developed a financial information business around specialized data, analytics and communication tools for financial professionals.",
+    "decision_style": ["Data driven", "Customer focused", "Analytical", "Execution oriented", "Market aware"],
+    "failure_lesson": "Business models need to evolve with customer needs, technology and market structure.",
+    "communication": "Focused on facts, information and practical decision-making.",
+    "wealth_lesson": "Specialized information and software can become highly valuable when customers depend on them for important decisions.",
+    "pattern_tags": ["data_driven", "customer_understanding", "information_advantage", "software", "specialization", "execution", "market_understanding"],
+    "source_type": ["company_material", "public_interviews", "company_history"],
+    "sources": [
+      {
+        "name": "Bloomberg",
+        "type": "primary",
+        "url": "https://www.bloomberg.com/company/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 10,
+    "person": "Indra Nooyi",
+    "title": "Business Executive & Former PepsiCo CEO",
+    "category": ["Leadership", "Business", "Strategy", "Communication"],
+    "short_description": "Business leader known for strategic thinking, organizational leadership and balancing long-term transformation with business performance.",
+    "principle": "Strong leadership requires balancing immediate performance with long-term organizational transformation.",
+    "experience": "Nooyi led PepsiCo through strategic changes involving portfolio transformation, global growth and organizational priorities.",
+    "decision_style": ["Strategic", "Long-term oriented", "People focused", "Analytical", "Balanced"],
+    "failure_lesson": "Large organizations require leaders to adapt strategies while maintaining alignment among employees, customers and stakeholders.",
+    "communication": "Known for structured communication, storytelling and connecting strategy with people.",
+    "wealth_lesson": "Sustainable business value requires strong strategy, execution, talent and adaptation.",
+    "pattern_tags": ["strategic_thinking", "leadership", "communication", "long_term_thinking", "adaptability", "people_management", "execution"],
+    "source_type": ["public_interviews", "company_history", "leadership_profiles"],
+    "sources": [
+      {
+        "name": "PepsiCo",
+        "type": "company",
+        "url": "https://www.pepsico.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 11,
+    "person": "Ratan Tata",
+    "title": "Industrialist & Former Tata Sons Chairman",
+    "category": ["Leadership", "Business", "Ethics", "Long-Term Thinking"],
+    "short_description": "Indian business leader associated with the transformation and global expansion of the Tata Group.",
+    "principle": "Long-term institution building requires trust, responsible leadership and willingness to invest beyond immediate returns.",
+    "experience": "During his leadership of Tata Sons, the group expanded internationally and developed businesses across multiple sectors.",
+    "decision_style": ["Long-term oriented", "Values driven", "Strategic", "Risk aware", "Institution focused"],
+    "failure_lesson": "Large strategic decisions can fail, but organizations can learn, adapt and continue building over decades.",
+    "communication": "Generally associated with calm, respectful and values-oriented communication.",
+    "wealth_lesson": "Durable businesses can be built through reputation, trust, strong institutions and long-term capital allocation.",
+    "pattern_tags": ["long_term_thinking", "leadership", "trust", "ethics", "institution_building", "strategic_thinking", "reputation"],
+    "source_type": ["company_material", "public_interviews", "institutional_profiles"],
+    "sources": [
+      {
+        "name": "Tata Group",
+        "type": "primary",
+        "url": "https://www.tata.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 12,
+    "person": "Azim Premji",
+    "title": "Technology Entrepreneur & Philanthropist",
+    "category": ["Technology", "Business", "Leadership", "Discipline"],
+    "short_description": "Indian technology entrepreneur who transformed Wipro into a major information technology company.",
+    "principle": "Strong institutions are built through disciplined execution, professional management and long-term thinking.",
+    "experience": "Premji transformed Wipro from its original consumer-products roots into a major technology services company.",
+    "decision_style": ["Disciplined", "Long-term oriented", "Analytical", "Institution focused", "Conservative"],
+    "failure_lesson": "Business transformation requires continuous adaptation as markets and technologies change.",
+    "communication": "Often emphasizes values, professional management and disciplined execution.",
+    "wealth_lesson": "Building a scalable institution can create durable economic value beyond individual transactions.",
+    "pattern_tags": ["discipline", "institution_building", "technology", "professional_management", "long_term_thinking", "execution", "adaptability"],
+    "source_type": ["company_material", "public_interviews", "foundation_material"],
+    "sources": [
+      {
+        "name": "Wipro",
+        "type": "primary",
+        "url": "https://www.wipro.com/"
+      },
+      {
+        "name": "Azim Premji Foundation",
+        "type": "primary",
+        "url": "https://azimpremjifoundation.org/"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 13,
+    "person": "Mukesh Ambani",
+    "title": "Business Leader & Reliance Industries Chairman",
+    "category": ["Business", "Scale", "Technology", "Infrastructure"],
+    "short_description": "Indian business leader associated with large-scale investments across energy, telecommunications, retail and digital infrastructure.",
+    "principle": "Large opportunities can be created by combining capital, technology, infrastructure and execution at scale.",
+    "experience": "Reliance expanded substantially into telecommunications and digital services while continuing to operate major businesses across energy and retail.",
+    "decision_style": ["Scale focused", "Capital intensive", "Long-term oriented", "Technology driven", "Strategic"],
+    "failure_lesson": "Large capital projects carry execution and market risks and require continuous adaptation.",
+    "communication": "Uses large-scale strategic narratives around technology, infrastructure and India's growth.",
+    "wealth_lesson": "Scale, infrastructure and distribution can create powerful competitive advantages in large markets.",
+    "pattern_tags": ["scale", "capital_allocation", "technology", "infrastructure", "distribution", "long_term_thinking", "execution"],
+    "source_type": ["company_material", "annual_reports", "public_statements"],
+    "sources": [
+      {
+        "name": "Reliance Industries",
+        "type": "primary",
+        "url": "https://www.ril.com/"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 14,
+    "person": "N. R. Narayana Murthy",
+    "title": "Infosys Co-Founder",
+    "category": ["Technology", "Entrepreneurship", "Leadership", "Values"],
+    "short_description": "Technology entrepreneur and Infosys co-founder associated with professional management, software services and institutional values.",
+    "principle": "Long-term reputation and professional standards can become powerful competitive advantages.",
+    "experience": "Murthy co-founded Infosys and helped develop it into a major Indian technology services company.",
+    "decision_style": ["Values driven", "Analytical", "Institution focused", "Long-term oriented", "Process driven"],
+    "failure_lesson": "Technology companies must continuously improve processes and adapt to changing global markets.",
+    "communication": "Often emphasizes clarity, ethics, professionalism and institutional thinking.",
+    "wealth_lesson": "A strong reputation and scalable service model can create significant long-term enterprise value.",
+    "pattern_tags": ["ethics", "institution_building", "professionalism", "technology", "long_term_thinking", "process_thinking", "reputation"],
+    "source_type": ["company_material", "public_interviews", "company_history"],
+    "sources": [
+      {
+        "name": "Infosys",
+        "type": "primary",
+        "url": "https://www.infosys.com/"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 15,
+    "person": "Dhirubhai Ambani",
+    "title": "Founder of Reliance",
+    "category": ["Entrepreneurship", "Sales", "Scale", "Business"],
+    "short_description": "Indian entrepreneur who built Reliance from a trading business into a major industrial enterprise.",
+    "principle": "Ambitious businesses can grow by understanding markets, building distribution and continuously increasing scale.",
+    "experience": "Ambani expanded from trading into textiles and later larger industrial businesses, building a broad business organization.",
+    "decision_style": ["Opportunity focused", "Growth oriented", "Market aware", "Relationship driven", "Ambitious"],
+    "failure_lesson": "Fast growth creates operational and financial challenges that require adaptability and strong execution.",
+    "communication": "Known historically for persuasive communication, relationship building and ambitious business narratives.",
+    "wealth_lesson": "Distribution, scale, access to capital and market understanding can amplify entrepreneurial opportunities.",
+    "pattern_tags": ["entrepreneurship", "sales", "distribution", "scale", "relationship_building", "opportunity_recognition", "ambition"],
+    "source_type": ["company_history", "institutional_profiles", "public_archives"],
+    "sources": [
+      {
+        "name": "Reliance Industries",
+        "type": "primary",
+        "url": "https://www.ril.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 16,
+    "person": "Jack Ma",
+    "title": "Alibaba Co-Founder",
+    "category": ["Entrepreneurship", "Sales", "Technology", "Persistence"],
+    "short_description": "Entrepreneur who co-founded Alibaba and built businesses around digital commerce and technology.",
+    "principle": "Persistence and understanding customers can matter more than starting with perfect resources.",
+    "experience": "Ma helped build Alibaba from an early internet business into a large digital commerce ecosystem.",
+    "decision_style": ["Customer focused", "Persistent", "Vision driven", "Opportunity oriented", "Adaptable"],
+    "failure_lesson": "Repeated rejection and setbacks can occur before product-market fit and organizational scale are achieved.",
+    "communication": "Uses storytelling, simple language and motivational narratives to communicate business ideas.",
+    "wealth_lesson": "Digital platforms can create leverage by connecting large numbers of buyers and sellers.",
+    "pattern_tags": ["persistence", "customer_understanding", "sales", "platform_thinking", "scale", "storytelling", "adaptability"],
+    "source_type": ["company_material", "public_interviews", "company_history"],
+    "sources": [
+      {
+        "name": "Alibaba Group",
+        "type": "primary",
+        "url": "https://www.alibabagroup.com/"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "id": 17,
+    "person": "Ray Dalio",
+    "title": "Investor & Founder of Bridgewater",
+    "category": ["Investing", "Decision Making", "Systems", "Learning"],
+    "short_description": "Investor known for systematic decision-making, principles-based management and studying economic patterns.",
+    "principle": "Treat mistakes and disagreements as opportunities to improve decision-making systems.",
+    "experience": "Dalio developed Bridgewater around systematic research, economic analysis and principles-based decision processes.",
+    "decision_style": ["Systematic", "Evidence driven", "Principles based", "Reflective", "Analytical"],
+    "failure_lesson": "Mistakes can become valuable when they are analyzed honestly and converted into repeatable learning.",
+    "communication": "Uses explicit principles, frameworks and structured explanations.",
+    "wealth_lesson": "Better decision systems can improve consistency, especially when uncertainty is high.",
+    "pattern_tags": ["systems_thinking", "learning_from_failure", "principles", "decision_frameworks", "risk_management", "reflection", "evidence_based"],
+    "source_type": ["company_material", "public_interviews", "published_principles"],
+    "sources": [
+      {
+        "name": "Bridgewater Associates",
+        "type": "primary",
+        "url": "https://www.bridgewater.com/"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 18,
+    "person": "Charlie Munger",
+    "title": "Investor & Vice Chairman of Berkshire Hathaway",
+    "category": ["Decision Making", "Investing", "Mental Models", "Learning"],
+    "short_description": "Investor known for mental models, multidisciplinary thinking, rationality and disciplined decision-making.",
+    "principle": "Better decisions come from using multiple mental models and avoiding predictable psychological mistakes.",
+    "experience": "Munger worked closely with Buffett at Berkshire Hathaway and emphasized multidisciplinary thinking in investing and life.",
+    "decision_style": ["Rational", "Multidisciplinary", "Patient", "Contrarian", "Evidence oriented"],
+    "failure_lesson": "Understanding recurring human biases can help prevent avoidable mistakes.",
+    "communication": "Known for concise, direct observations and practical mental models.",
+    "wealth_lesson": "Avoiding major mistakes can be as important as finding exceptional opportunities.",
+    "pattern_tags": ["mental_models", "rational_thinking", "patience", "risk_management", "multidisciplinary_learning", "decision_making", "simplicity"],
+    "source_type": ["public_speeches", "shareholder_meetings", "company_material"],
+    "sources": [
+      {
+        "name": "Berkshire Hathaway",
+        "type": "primary",
+        "url": "https://www.berkshirehathaway.com/"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "id": 19,
+    "person": "Peter Thiel",
+    "title": "Entrepreneur & Investor",
+    "category": ["Technology", "Startups", "Strategy", "Contrarian Thinking"],
+    "short_description": "Technology entrepreneur and investor known for PayPal, startup investing and contrarian approaches to technology and competition.",
+    "principle": "Look for valuable problems where a focused solution can create a meaningful competitive advantage.",
+    "experience": "Thiel co-founded PayPal and later invested in technology companies while developing frameworks around startups and competition.",
+    "decision_style": ["Contrarian", "Strategic", "Technology focused", "High conviction", "Long-term oriented"],
+    "failure_lesson": "Startups can fail when they lack differentiation, distribution or a defensible advantage.",
+    "communication": "Uses frameworks, provocative questions and contrarian arguments.",
+    "wealth_lesson": "Large outcomes can emerge from technology companies that build differentiated products and defensible market positions.",
+    "pattern_tags": ["contrarian_thinking", "technology", "competitive_advantage", "monopoly_thinking", "high_conviction", "startups", "long_term_thinking"],
+    "source_type": ["public_interviews", "company_material", "published_writing"],
+    "sources": [
+      {
+        "name": "Founders Fund",
+        "type": "primary",
+        "url": "https://foundersfund.com/"
+      }
+    ],
+    "confidence": "medium"
+  }
+]

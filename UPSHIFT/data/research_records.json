@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "person_id": 1,
+    "person": "Warren Buffett",
+    "type": "decision",
+    "topic": "long_term_thinking",
+    "claim": "Long-term thinking can help reduce the influence of short-term noise when evaluating decisions.",
+    "context": "Investment decision-making",
+    "tags": ["long_term_thinking", "patience", "decision_making"],
+    "confidence": "high"
+  },
+  {
+    "id": 2,
+    "person_id": 2,
+    "person": "Jeff Bezos",
+    "type": "principle",
+    "topic": "customer_focus",
+    "claim": "Customer needs can be used as an important input when making business and product decisions.",
+    "context": "Amazon business strategy",
+    "tags": ["customer_focus", "long_term_thinking", "innovation"],
+    "confidence": "high"
+  },
+  {
+    "id": 3,
+    "person_id": 3,
+    "person": "Sara Blakely",
+    "type": "failure",
+    "topic": "learning_from_failure",
+    "claim": "Failure can be treated as feedback and part of experimentation.",
+    "context": "Building Spanx",
+    "tags": ["failure_learning", "experimentation", "resilience"],
+    "confidence": "medium"
+  },
+  {
+    "id": 4,
+    "person_id": 4,
+    "person": "Bill Gates",
+    "type": "learning",
+    "topic": "continuous_learning",
+    "claim": "Continuous learning and reading can contribute to better understanding and decision-making.",
+    "context": "Technology and personal learning",
+    "tags": ["learning", "reading", "decision_making"],
+    "confidence": "high"
+  },
+  {
+    "id": 5,
+    "person_id": 9,
+    "person": "Michael Bloomberg",
+    "type": "career",
+    "topic": "specialized_knowledge",
+    "claim": "Specialized knowledge can become valuable when it is turned into useful products or services.",
+    "context": "Financial information business",
+    "tags": ["skill_building", "entrepreneurship", "innovation"],
+    "confidence": "medium"
+  }
+]

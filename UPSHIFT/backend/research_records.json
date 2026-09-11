@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "person": "Bill Gates",
+    "type": "learning",
+    "topic": "continuous_learning",
+    "claim": "Bill Gates describes going into serious learning mode when starting a new project and researching the subject deeply.",
+    "context": "Learning and research",
+    "tags": ["learning", "research", "skill_building", "technology"],
+    "confidence": "high"
+  },
+  {
+    "id": 2,
+    "person": "Bill Gates",
+    "type": "technology",
+    "topic": "AI_software",
+    "claim": "Bill Gates discusses how AI agents can expand what computers are able to do beyond traditional software applications.",
+    "context": "AI and software",
+    "tags": ["AI", "software", "technology", "agents"],
+    "confidence": "high"
+  },
+  {
+    "id": 3,
+    "person": "Jeff Bezos",
+    "type": "experimentation",
+    "topic": "experimentation",
+    "claim": "Amazon emphasizes experimentation and accepting failure as part of invention and innovation.",
+    "context": "Building technology and products",
+    "tags": ["experimentation", "failure", "innovation", "building"],
+    "confidence": "high"
+  },
+  {
+    "id": 4,
+    "person": "Ray Dalio",
+    "type": "failure",
+    "topic": "learning_from_failure",
+    "claim": "Ray Dalio emphasizes using mistakes and failures as opportunities to learn and improve future decisions.",
+    "context": "Decision-making and improvement",
+    "tags": ["failure", "reflection", "learning", "improvement"],
+    "confidence": "high"
+  },
+  {
+    "id": 5,
+    "person": "Ray Dalio",
+    "type": "decision_making",
+    "topic": "root_cause_analysis",
+    "claim": "Ray Dalio recommends identifying the root causes of problems before deciding how to respond.",
+    "context": "Problem solving",
+    "tags": ["problem_solving", "root_cause", "decision_making"],
+    "confidence": "high"
+  },
+  {
+    "id": 6,
+    "person": "Elon Musk",
+    "type": "engineering",
+    "topic": "engineering_problem_solving",
+    "claim": "Elon Musk's technology companies emphasize solving difficult technical problems through engineering and iterative development.",
+    "context": "Engineering and technology",
+    "tags": ["engineering", "problem_solving", "iteration", "technology"],
+    "confidence": "medium"
+  },
+  {
+    "id": 7,
+    "person": "N. R. Narayana Murthy",
+    "type": "career",
+    "topic": "software_engineering",
+    "claim": "N. R. Narayana Murthy built Infosys into a major technology-services company, making software engineering and technology delivery central to its growth.",
+    "context": "Technology career",
+    "tags": ["software", "engineering", "technology", "career"],
+    "confidence": "medium"
+  },
+  {
+    "id": 8,
+    "person": "Warren Buffett",
+    "type": "decision_making",
+    "topic": "long_term_thinking",
+    "claim": "Warren Buffett is known for emphasizing patience, intrinsic value and long-term thinking rather than short-term prediction.",
+    "context": "Investment decision-making",
+    "tags": ["long_term_thinking", "patience", "decision_making"],
+    "confidence": "high"
+  }
+]
