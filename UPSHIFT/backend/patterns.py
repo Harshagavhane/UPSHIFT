@@ -1,3 +1,4 @@
+
 import json
 from pathlib import Path
 from collections import Counter
@@ -31,7 +32,6 @@ def analyze_patterns():
     patterns = []
 
     for tag, count in pattern_counter.most_common():
-
         if count >= 5:
             evidence = "Very Strong"
         elif count >= 3:
