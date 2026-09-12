@@ -8,14 +8,21 @@ from research_engine.patterns import analyze_patterns
 app = FastAPI(title="UPSHIFT API")
 
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "https://upshift-seven.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 DATA_FILE = Path(__file__).parent.parent / "data" / "people.json"
 
