@@ -45,7 +45,7 @@ function App() {
 
   const [people, setPeople] = useState([]);
   const [patterns, setPatterns] = useState([]);
-
+const [selectedPerson, setSelectedPerson] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [researchLoading, setResearchLoading] = useState(true);
@@ -336,11 +336,127 @@ function App() {
 
               {people.slice(0, 12).map((person, index) => (
 
-                <article
-                  className="person-card"
-                  key={person.id || index}
-                >
+<article
+  className="person-card"
+  key={person.id || index}
+  onClick={() => setSelectedPerson(person)}
+  style={{ cursor: "pointer" }}
+  >
 
+{people.slice(0, 12).map((person, index) => (
+  <article
+    className="person-card"
+    key={person.id || index}
+  >
+    <span className="card-number">
+      {String(index + 1).padStart(2, "0")}
+    </span>
+
+    <span className="card-category">
+      {person.category || "RESEARCH"}
+    </span>
+
+    <h3>{person.name || "Unknown"}</h3>
+
+    <p>
+      {person.principle ||
+        person.experience ||
+        "Research insight from UPSHIFT."}
+    </p>
+  </article>
+))}
+{selectedPerson && (
+  <div
+    className="person-intelligence"
+    style={{
+      marginTop: "40px",
+      padding: "40px",
+      border: "1px solid rgba(255,255,255,0.15)",
+      background: "#111",
+    }}
+  >
+    <button
+      onClick={() => setSelectedPerson(null)}
+      style={{
+        float: "right",
+        background: "transparent",
+        border: "1px solid rgba(255,255,255,0.2)",
+        color: "#fff",
+        padding: "8px 14px",
+        cursor: "pointer",
+      }}
+    >
+      CLOSE ×
+    </button>
+
+    <span className="section-label">
+      INTELLIGENCE PROFILE
+    </span>
+
+    <h2 style={{ marginTop: "15px" }}>
+      {selectedPerson.name}
+    </h2>
+
+    <p style={{ opacity: 0.6, marginTop: "8px" }}>
+      {selectedPerson.category || "EXTRAORDINARY MIND"}
+    </p>
+
+    <div style={{ marginTop: "35px" }}>
+      <span className="section-label">
+        CORE PRINCIPLE
+      </span>
+
+      <h3 style={{ marginTop: "12px", fontSize: "24px" }}>
+        {selectedPerson.principle ||
+          selectedPerson.experience ||
+          "A research insight from UPSHIFT."}
+      </h3>
+    </div>
+
+    <div
+      style={{
+        marginTop: "35px",
+        paddingTop: "25px",
+        borderTop: "1px solid rgba(255,255,255,0.1)",
+      }}
+    >
+      <span className="section-label">
+        UPSHIFT TAKEAWAY
+      </span>
+
+      <p style={{ marginTop: "12px", lineHeight: 1.7 }}>
+        Study the decision behind the result — not just
+        the result itself. The goal is to understand the
+        pattern that can be adapted to your own situation.
+      </p>
+    </div>
+
+    <div style={{ marginTop: "35px" }}>
+      <span className="section-label">
+        APPLY THIS
+      </span>
+
+      <p style={{ marginTop: "12px", lineHeight: 1.7 }}>
+        Ask yourself: <strong>
+          Where could this principle change one decision
+          I am making right now?
+        </strong>
+      </p>
+    </div>
+
+    <button
+      className="primary-button"
+      style={{ marginTop: "30px" }}
+      onClick={() => {
+        document
+          .getElementById("move")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      APPLY TO MY NEXT MOVE →
+    </button>
+  </div>
+)}
                   <span className="card-number">
                     {String(index + 1).padStart(2, "0")}
                   </span>
