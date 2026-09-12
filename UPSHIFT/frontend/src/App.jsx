@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-const API = import.meta.env.VITE_API_URL || "";
+const API = "https://upshift.onrender.com";
 
 const people = [
   ["01", "Steve Jobs", "THINKING", "Focus is about saying no."],
