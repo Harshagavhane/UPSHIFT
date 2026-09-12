@@ -1,5 +1,5 @@
-import "./App.css";
 import { useEffect, useState } from "react";
+import "./App.css";
 
 const API = "https://upshift.onrender.com";
 
@@ -7,8 +7,7 @@ function calculateWealthScore(profile) {
   const income = Number(profile.income) || 0;
   const savings = Number(profile.savings) || 0;
 
-  const earning =
-    profile.skills && profile.skills.trim() ? 20 : 5;
+  const earning = profile.skills?.trim() ? 20 : 5;
 
   let foundation = 8;
 
@@ -147,13 +146,17 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error("AI request failed");
+        throw new Error("Intelligence request failed");
       }
 
       const data = await response.json();
 
       setResult({
         ...data,
+
+        patterns_detected:
+          data.patterns_detected || [],
+
         people_to_study:
           data.people_to_study &&
           data.people_to_study.length
@@ -177,18 +180,34 @@ function App() {
               ],
       });
     } catch (error) {
-      console.error("AI error:", error);
+      console.error("UPSHIFT Intelligence error:", error);
 
       setResult({
         upshift_score: 70,
         bottleneck: "Focused execution",
         bottleneck_reason:
           "Your next level needs one clear priority instead of scattered effort.",
+
+        patterns_detected: [
+          {
+            pattern: "Focused Execution",
+            records_count: 1,
+            evidence_strength: "Early",
+            people: ["UPSHIFT Research"],
+            why_relevant:
+              "Turning learning into consistent execution is a common development challenge.",
+          },
+        ],
+
+        evidence_summary:
+          "UPSHIFT could not reach the intelligence service, so this is a fallback recommendation.",
+
         next_moves: [
           "Choose one high-value skill.",
           "Build one proof-of-work project.",
           "Review your progress every Sunday.",
         ],
+
         people_to_study: [
           {
             name: "Warren Buffett",
@@ -206,6 +225,7 @@ function App() {
               "Learning and strategic thinking.",
           },
         ],
+
         thirty_day_focus:
           "Build one valuable skill and turn it into visible proof.",
       });
@@ -217,8 +237,7 @@ function App() {
   return (
     <div className="app">
 
-      {/* NAVIGATION */}
-
+      {/* NAVBAR */}
       <nav className="navbar">
         <div className="brand">UPSHIFT</div>
 
@@ -234,9 +253,7 @@ function App() {
       <main>
 
         {/* HERO */}
-
         <section className="hero" id="home">
-
           <div className="hero-label">
             PERSONAL INTELLIGENCE SYSTEM
           </div>
@@ -257,16 +274,14 @@ function App() {
           </a>
 
           <div className="hero-meta">
-            <span>1000+ MINDS STUDIED</span>
+            <span>RESEARCH-DRIVEN AI</span>
             <span>BUILT FOR YOUR NEXT MOVE</span>
           </div>
-
         </section>
 
+
         {/* MANIFESTO */}
-
         <section className="manifesto">
-
           <div className="section-label">
             THE UPSHIFT METHOD
           </div>
@@ -280,15 +295,14 @@ function App() {
           </h2>
 
           <p>
-            UPSHIFT turns experiences, decisions, failures and
-            principles into practical intelligence for your
-            next move.
+            UPSHIFT turns experiences, decisions, failures
+            and principles into practical intelligence for
+            your next move.
           </p>
-
         </section>
 
-        {/* STUDY THE GREATS */}
 
+        {/* STUDY THE GREATS */}
         <section className="section" id="greats">
 
           <div className="section-heading">
@@ -311,6 +325,7 @@ function App() {
             </p>
 
           </div>
+
 
           {researchLoading ? (
             <div className="person-card">
@@ -351,7 +366,6 @@ function App() {
             </div>
           )}
 
-          {/* PATTERNS */}
 
           {patterns.length > 0 && (
 
@@ -363,43 +377,38 @@ function App() {
 
               <div className="patterns-list">
 
-                {patterns.slice(0, 8).map(
-                  (item, index) => (
+                {patterns.slice(0, 8).map((item, index) => (
 
-                    <div
-                      className="pattern-row"
-                      key={`${item.pattern}-${index}`}
-                    >
+                  <div
+                    className="pattern-row"
+                    key={`${item.pattern}-${index}`}
+                  >
 
-                      <strong>
-                        {item.pattern}
-                      </strong>
+                    <strong>
+                      {item.pattern}
+                    </strong>
 
-                      <span>
-                        {item.records_count || 0} records
-                        {" · "}
-                        {item.evidence_strength ||
-                          "Early"}
-                      </span>
+                    <span>
+                      {item.records_count || 0} records
+                      {" · "}
+                      {item.evidence_strength || "Early"}
+                    </span>
 
-                    </div>
+                  </div>
 
-                  )
-                )}
+                ))}
 
               </div>
 
             </div>
+
           )}
 
         </section>
 
-        {/* YOUR NEXT MOVE */}
 
-        <section
-          className="section move-section"
-          id="move"
-        >
+        {/* YOUR NEXT MOVE */}
+        <section className="section move-section" id="move">
 
           <div className="section-label">
             02 — YOUR NEXT MOVE
@@ -421,12 +430,12 @@ function App() {
 
           </div>
 
+
           <div className="profile-form">
 
             <div className="form-row">
 
               <div className="form-field">
-
                 <label>AGE</label>
 
                 <input
@@ -435,11 +444,9 @@ function App() {
                   onChange={handleChange}
                   placeholder="20"
                 />
-
               </div>
 
               <div className="form-field">
-
                 <label>CURRENT SITUATION</label>
 
                 <input
@@ -448,15 +455,14 @@ function App() {
                   onChange={handleChange}
                   placeholder="Student / Working / Building"
                 />
-
               </div>
 
             </div>
 
+
             <div className="form-row">
 
               <div className="form-field">
-
                 <label>SKILLS</label>
 
                 <input
@@ -465,11 +471,9 @@ function App() {
                   onChange={handleChange}
                   placeholder="Python, AI, sales..."
                 />
-
               </div>
 
               <div className="form-field">
-
                 <label>MONTHLY INCOME</label>
 
                 <input
@@ -479,15 +483,14 @@ function App() {
                   onChange={handleChange}
                   placeholder="0"
                 />
-
               </div>
 
             </div>
 
+
             <div className="form-row">
 
               <div className="form-field">
-
                 <label>SAVINGS</label>
 
                 <input
@@ -497,11 +500,9 @@ function App() {
                   onChange={handleChange}
                   placeholder="0"
                 />
-
               </div>
 
               <div className="form-field">
-
                 <label>HOURS AVAILABLE / DAY</label>
 
                 <input
@@ -510,14 +511,16 @@ function App() {
                   onChange={handleChange}
                   placeholder="2"
                 />
-
               </div>
 
             </div>
 
+
             <div className="form-field">
 
-              <label>BIGGEST GOAL *</label>
+              <label>
+                BIGGEST GOAL *
+              </label>
 
               <input
                 name="goal"
@@ -528,9 +531,12 @@ function App() {
 
             </div>
 
+
             <div className="form-field">
 
-              <label>BIGGEST PROBLEM</label>
+              <label>
+                BIGGEST PROBLEM
+              </label>
 
               <textarea
                 name="problem"
@@ -542,23 +548,31 @@ function App() {
 
             </div>
 
+
             <button
               className="primary-button"
               onClick={findMove}
               disabled={loading}
             >
+
               {loading
                 ? "UPSHIFT IS THINKING..."
                 : "FIND MY NEXT MOVE →"}
+
             </button>
 
           </div>
 
-          {/* AI RESULT */}
+
+          {/* =====================================================
+              INTELLIGENCE RESULT
+          ===================================================== */}
 
           {result && (
 
             <div className="ai-result">
+
+              {/* SCORE + BOTTLENECK */}
 
               <div className="result-top">
 
@@ -574,9 +588,12 @@ function App() {
 
                 </div>
 
+
                 <div className="bottleneck">
 
-                  <span>CURRENT BOTTLENECK</span>
+                  <span>
+                    CURRENT BOTTLENECK
+                  </span>
 
                   <h3>
                     {result.bottleneck}
@@ -590,11 +607,107 @@ function App() {
 
               </div>
 
+
+              {/* RESEARCH INTELLIGENCE */}
+
+              {result.patterns_detected?.length > 0 && (
+
+                <div className="result-block">
+
+                  <span>
+                    PATTERNS DETECTED
+                  </span>
+
+                  <div className="moves-list">
+
+                    {result.patterns_detected.map(
+                      (pattern, index) => (
+
+                        <div
+                          className="move-item"
+                          key={index}
+                        >
+
+                          <strong>
+                            {String(index + 1).padStart(
+                              2,
+                              "0"
+                            )}
+                          </strong>
+
+                          <div>
+
+                            <h3>
+                              {pattern.pattern}
+                            </h3>
+
+                            <p>
+                              {pattern.records_count || 0}
+                              {" research records"}
+                              {" · "}
+                              {pattern.evidence_strength ||
+                                "Early"}
+                            </p>
+
+                            {pattern.people?.length > 0 && (
+
+                              <p>
+                                Evidence connected to:{" "}
+                                {pattern.people.join(", ")}
+                              </p>
+
+                            )}
+
+                            {pattern.why_relevant && (
+
+                              <p>
+                                {pattern.why_relevant}
+                              </p>
+
+                            )}
+
+                          </div>
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
+                </div>
+
+              )}
+
+
+              {/* EVIDENCE SUMMARY */}
+
+              {result.evidence_summary && (
+
+                <div className="result-block">
+
+                  <span>
+                    RESEARCH SIGNAL
+                  </span>
+
+                  <h3>
+                    {result.evidence_summary}
+                  </h3>
+
+                </div>
+
+              )}
+
+
+              {/* NEXT MOVES + 30 DAY */}
+
               <div className="result-grid">
 
                 <div className="result-block">
 
-                  <span>NEXT MOVES</span>
+                  <span>
+                    NEXT MOVES
+                  </span>
 
                   <div className="moves-list">
 
@@ -613,7 +726,9 @@ function App() {
                             )}
                           </strong>
 
-                          <p>{move}</p>
+                          <p>
+                            {move}
+                          </p>
 
                         </div>
 
@@ -624,9 +739,12 @@ function App() {
 
                 </div>
 
+
                 <div className="result-block">
 
-                  <span>30-DAY FOCUS</span>
+                  <span>
+                    30-DAY FOCUS
+                  </span>
 
                   <h3>
                     {result.thirty_day_focus}
@@ -636,11 +754,14 @@ function App() {
 
               </div>
 
+
               {/* PEOPLE TO STUDY */}
 
               <div className="result-people">
 
-                <span>PEOPLE TO STUDY</span>
+                <span>
+                  PEOPLE TO STUDY
+                </span>
 
                 <div className="study-list">
 
@@ -675,12 +796,9 @@ function App() {
 
         </section>
 
-        {/* WEALTH */}
 
-        <section
-          className="section"
-          id="wealth"
-        >
+        {/* WEALTH */}
+        <section className="section" id="wealth">
 
           <div className="section-label">
             03 — WEALTH
@@ -702,84 +820,58 @@ function App() {
 
           </div>
 
+
           <div className="wealth-grid">
 
             <div className="wealth-card">
-
               <span>01</span>
-
-              <h3>
-                Financial Foundation
-              </h3>
-
+              <h3>Financial Foundation</h3>
               <strong>
                 {wealthScore.foundation}/25
               </strong>
-
               <p>
                 Your current savings and financial base.
               </p>
-
             </div>
 
             <div className="wealth-card">
-
               <span>02</span>
-
-              <h3>
-                Earning Power
-              </h3>
-
+              <h3>Earning Power</h3>
               <strong>
                 {wealthScore.earning}/25
               </strong>
-
               <p>
                 Your ability to increase future income
                 through skills.
               </p>
-
             </div>
 
             <div className="wealth-card">
-
               <span>03</span>
-
-              <h3>
-                Financial Knowledge
-              </h3>
-
+              <h3>Financial Knowledge</h3>
               <strong>
                 {wealthScore.knowledge}/25
               </strong>
-
               <p>
                 Your understanding of money and
                 financial decisions.
               </p>
-
             </div>
 
             <div className="wealth-card">
-
               <span>04</span>
-
-              <h3>
-                Risk Management
-              </h3>
-
+              <h3>Risk Management</h3>
               <strong>
                 {wealthScore.risk}/25
               </strong>
-
               <p>
                 Your financial safety and ability
                 to handle uncertainty.
               </p>
-
             </div>
 
           </div>
+
 
           <div className="wealth-total">
 
@@ -795,12 +887,9 @@ function App() {
 
         </section>
 
-        {/* LEVEL UP */}
 
-        <section
-          className="section"
-          id="level"
-        >
+        {/* LEVEL UP */}
+        <section className="section" id="level">
 
           <div className="section-label">
             04 — LEVEL UP
@@ -821,70 +910,55 @@ function App() {
 
           </div>
 
+
           <div className="level-grid">
 
             <div className="level-card">
-
               <span>THINKING</span>
-
               <strong>
                 {levelUpScore.thinking}
               </strong>
-
               <p>
                 Learning and strategic thinking.
               </p>
-
             </div>
 
             <div className="level-card">
-
               <span>CAREER</span>
-
               <strong>
                 {levelUpScore.career}
               </strong>
-
               <p>
                 Skills and earning potential.
               </p>
-
             </div>
 
             <div className="level-card">
-
               <span>MONEY</span>
-
               <strong>
                 {levelUpScore.money}
               </strong>
-
               <p>
                 Financial foundation and awareness.
               </p>
-
             </div>
 
             <div className="level-card">
-
               <span>DISCIPLINE</span>
-
               <strong>
                 {levelUpScore.discipline}
               </strong>
-
               <p>
                 Consistency and risk management.
               </p>
-
             </div>
 
           </div>
 
         </section>
 
-        {/* FINAL CTA */}
 
+        {/* FINAL CTA */}
         <section className="final-cta">
 
           <div className="section-label">
@@ -908,11 +982,13 @@ function App() {
 
       </main>
 
-      {/* FOOTER */}
 
+      {/* FOOTER */}
       <footer className="footer">
 
-        <strong>UPSHIFT</strong>
+        <strong>
+          UPSHIFT
+        </strong>
 
         <span>
           PERSONAL INTELLIGENCE SYSTEM
