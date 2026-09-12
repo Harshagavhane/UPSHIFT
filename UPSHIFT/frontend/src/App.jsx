@@ -1,3 +1,4 @@
+import "./App.css";
 import { useEffect, useState } from "react";
 
 const API = "https://upshift.onrender.com";
