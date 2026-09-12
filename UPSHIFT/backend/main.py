@@ -307,10 +307,9 @@ def verify_payment(payment: PaymentVerification):
         raise
 
     except Exception as error:
+    print("RAZORPAY ORDER ERROR:", repr(error))
 
-        print("RAZORPAY VERIFICATION ERROR:", error)
-
-        raise HTTPException(
-            status_code=400,
-            detail="Payment verification failed."
-        )
+    raise HTTPException(
+        status_code=500,
+        detail=str(error)
+    )
