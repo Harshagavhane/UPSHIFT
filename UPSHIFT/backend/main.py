@@ -1,14 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import json
+import os
+import uuid
 from pathlib import Path
+
+import razorpay
 
 from ai_engine import generate_ai_recommendation
 from research_engine.patterns import analyze_patterns
+
+
 app = FastAPI(title="UPSHIFT API")
 
 
-from fastapi.middleware.cors import CORSMiddleware
+# =========================
+# CORS
+# =========================
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +33,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# =========================
+# RAZORPAY
+# =========================
+
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+
+
+def get_razorpay_client():
+    if not RAZORPAY_KEY_ID or not RAZORPAY_KEY_SECRET:
+        raise HTTPException(
+            status_code=500,
+            detail="Razorpay environment variables are missing."
+        )
+
+    return razorpay.Client(
+        auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET)
+    )
+
+
+class PaymentVerification(BaseModel):
+    razorpay_order_id: str
+    razorpay_payment_id: str
+    razorpay_signature: str
+
+
+# =========================
+# DATA
+# =========================
+
 DATA_FILE = Path(__file__).parent.parent / "data" / "people.json"
 
 
@@ -31,6 +71,10 @@ def load_people():
     with open(DATA_FILE, "r", encoding="utf-8") as file:
         return json.load(file)
 
+
+# =========================
+# BASIC ROUTES
+# =========================
 
 @app.get("/")
 def home():
@@ -62,42 +106,23 @@ def get_person(person_id: int):
         "error": "Person not found"
     }
 
+
+# =========================
+# PATTERNS
+# =========================
+
 @app.get("/patterns")
 def get_patterns():
     return analyze_patterns()
-    pattern_counts = {}
 
-    for person in people:
-        for tag in person.get("pattern_tags", []):
-            pattern_counts[tag] = pattern_counts.get(tag, 0) + 1
 
-    patterns = []
-
-    for tag, count in sorted(
-        pattern_counts.items(),
-        key=lambda item: item[1],
-        reverse=True
-    ):
-        patterns.append({
-            "pattern": tag.replace("_", " ").title(),
-            "people_count": count,
-            "evidence_strength": (
-                "High"
-                if count >= 3
-                else "Moderate"
-                if count == 2
-                else "Early"
-            )
-        })
-
-    return {
-        "total_people_analyzed": len(people),
-        "patterns": patterns
-    }
-
+# =========================
+# NORMAL RECOMMENDATION
+# =========================
 
 @app.post("/recommend")
 def recommend(profile: dict):
+
     income = profile.get("income", 0)
     savings = profile.get("savings", 0)
     skills = profile.get("skills", "")
@@ -105,10 +130,13 @@ def recommend(profile: dict):
     hours = profile.get("hours", 0)
 
     if income == 0:
+
         bottleneck = "Earning Power"
+
         bottleneck_reason = (
             "Your biggest opportunity is building a skill that can create income."
         )
+
         action_plan = [
             "Choose one high-value skill aligned with your career goal.",
             "Spend your available daily time building projects.",
@@ -116,10 +144,13 @@ def recommend(profile: dict):
         ]
 
     elif savings < income * 2:
+
         bottleneck = "Financial Discipline"
+
         bottleneck_reason = (
             "Your earning ability needs to be supported by stronger financial habits."
         )
+
         action_plan = [
             "Track every expense for the next 30 days.",
             "Create a fixed saving percentage from every income source.",
@@ -127,10 +158,13 @@ def recommend(profile: dict):
         ]
 
     elif len(skills.split(",")) < 3:
+
         bottleneck = "Skill Development"
+
         bottleneck_reason = (
             "You need deeper capability in a small number of valuable skills."
         )
+
         action_plan = [
             "Pick one primary skill instead of learning everything at once.",
             "Practice that skill for at least 60–90 minutes every day.",
@@ -138,10 +172,13 @@ def recommend(profile: dict):
         ]
 
     elif hours < 2:
+
         bottleneck = "Time & Execution"
+
         bottleneck_reason = (
             "Your available focused time is currently the main constraint."
         )
+
         action_plan = [
             "Reserve one uninterrupted block of focused work every day.",
             "Remove the biggest distraction during that block.",
@@ -149,10 +186,13 @@ def recommend(profile: dict):
         ]
 
     else:
+
         bottleneck = "Execution"
+
         bottleneck_reason = (
             "You already have useful resources. Consistent execution is the next leverage point."
         )
+
         action_plan = [
             "Choose one important goal for the next 30 days.",
             "Break it into weekly measurable outcomes.",
@@ -194,6 +234,83 @@ def recommend(profile: dict):
     }
 
 
+# =========================
+# AI RECOMMENDATION
+# =========================
+
 @app.post("/ai-recommend")
 def ai_recommend(profile: dict):
     return generate_ai_recommendation(profile)
+
+
+# =========================
+# CREATE RAZORPAY ORDER
+# =========================
+
+@app.post("/create-payment-order")
+def create_payment_order():
+
+    try:
+
+        client = get_razorpay_client()
+
+        order = client.order.create({
+            "amount": 4900,
+            "currency": "INR",
+            "receipt": f"upshift_{uuid.uuid4().hex[:20]}",
+        })
+
+        return {
+            "key_id": RAZORPAY_KEY_ID,
+            "order_id": order["id"],
+            "amount": order["amount"],
+            "currency": order["currency"],
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+
+        print("RAZORPAY ORDER ERROR:", error)
+
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to create Razorpay order."
+        )
+
+
+# =========================
+# VERIFY RAZORPAY PAYMENT
+# =========================
+
+@app.post("/verify-payment")
+def verify_payment(payment: PaymentVerification):
+
+    try:
+
+        client = get_razorpay_client()
+
+        client.utility.verify_payment_signature({
+            "razorpay_order_id": payment.razorpay_order_id,
+            "razorpay_payment_id": payment.razorpay_payment_id,
+            "razorpay_signature": payment.razorpay_signature,
+        })
+
+        return {
+            "success": True,
+            "premium": True,
+            "message": "Payment verified successfully."
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+
+        print("RAZORPAY VERIFICATION ERROR:", error)
+
+        raise HTTPException(
+            status_code=400,
+            detail="Payment verification failed."
+        )
