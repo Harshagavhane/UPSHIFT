@@ -1,33 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const API = "https://upshift.onrender.com";
-
-const people = [
-  {
-    id: 1,
-    name: "Steve Jobs",
-    category: "THINKING",
-    principle: "Focus is about saying no to many good ideas.",
-  },
-  {
-    id: 2,
-    name: "Warren Buffett",
-    category: "MONEY",
-    principle: "Think long term and protect the downside.",
-  },
-  {
-    id: 3,
-    name: "Jeff Bezos",
-    category: "EXECUTION",
-    principle: "Customer obsession and long-term thinking.",
-  },
-  {
-    id: 4,
-    name: "Sara Blakely",
-    category: "FAILURE",
-    principle: "Failure is feedback, not identity.",
-  },
-];
 
 function calculateWealthScore(profile) {
   const income = Number(profile.income) || 0;
@@ -70,8 +43,12 @@ function App() {
     problem: "",
   });
 
+  const [people, setPeople] = useState([]);
+  const [patterns, setPatterns] = useState([]);
+
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [researchLoading, setResearchLoading] = useState(true);
 
   const wealthScore = calculateWealthScore(profile);
 
@@ -81,6 +58,65 @@ function App() {
     money: Math.min(100, wealthScore.foundation * 4),
     discipline: Math.min(100, wealthScore.risk * 4),
   };
+
+  useEffect(() => {
+    async function loadResearchData() {
+      try {
+        const [peopleResponse, patternsResponse] =
+          await Promise.all([
+            fetch(`${API}/people`),
+            fetch(`${API}/patterns`),
+          ]);
+
+        if (!peopleResponse.ok || !patternsResponse.ok) {
+          throw new Error("Research API request failed");
+        }
+
+        const peopleData = await peopleResponse.json();
+        const patternsData = await patternsResponse.json();
+
+        setPeople(peopleData.people || []);
+        setPatterns(patternsData.patterns || []);
+      } catch (error) {
+        console.error("Research data error:", error);
+
+        setPeople([
+          {
+            id: 1,
+            name: "Steve Jobs",
+            category: "THINKING",
+            principle:
+              "Focus is about saying no to many good ideas.",
+          },
+          {
+            id: 2,
+            name: "Warren Buffett",
+            category: "MONEY",
+            principle:
+              "Think long term and protect the downside.",
+          },
+          {
+            id: 3,
+            name: "Jeff Bezos",
+            category: "EXECUTION",
+            principle:
+              "Customer obsession and long-term thinking.",
+          },
+          {
+            id: 4,
+            name: "Sara Blakely",
+            category: "FAILURE",
+            principle:
+              "Failure is feedback, not identity.",
+          },
+        ]);
+      } finally {
+        setResearchLoading(false);
+      }
+    }
+
+    loadResearchData();
+  }, []);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -118,7 +154,8 @@ function App() {
       setResult({
         ...data,
         people_to_study:
-          data.people_to_study && data.people_to_study.length
+          data.people_to_study &&
+          data.people_to_study.length
             ? data.people_to_study
             : [
                 {
@@ -139,7 +176,7 @@ function App() {
               ],
       });
     } catch (error) {
-      console.error(error);
+      console.error("AI error:", error);
 
       setResult({
         upshift_score: 70,
@@ -193,10 +230,9 @@ function App() {
         </div>
       </nav>
 
-
-      {/* HERO */}
-
       <main>
+
+        {/* HERO */}
 
         <section className="hero" id="home">
 
@@ -226,7 +262,6 @@ function App() {
 
         </section>
 
-
         {/* MANIFESTO */}
 
         <section className="manifesto">
@@ -250,7 +285,6 @@ function App() {
           </p>
 
         </section>
-
 
         {/* STUDY THE GREATS */}
 
@@ -277,38 +311,94 @@ function App() {
 
           </div>
 
+          {researchLoading ? (
+            <div className="person-card">
+              <p>Loading research...</p>
+            </div>
+          ) : (
+            <div className="people-grid">
 
-          <div className="people-grid">
+              {people.slice(0, 12).map((person, index) => (
 
-            {people.map((person) => (
-              <article
-                className="person-card"
-                key={person.id}
-              >
+                <article
+                  className="person-card"
+                  key={person.id || index}
+                >
 
-                <span className="card-number">
-                  {String(person.id).padStart(2, "0")}
-                </span>
+                  <span className="card-number">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
 
-                <span className="card-category">
-                  {person.category}
-                </span>
+                  <span className="card-category">
+                    {person.category || "RESEARCH"}
+                  </span>
 
-                <h3>{person.name}</h3>
+                  <h3>
+                    {person.name || "Unknown"}
+                  </h3>
 
-                <p>{person.principle}</p>
+                  <p>
+                    {person.principle ||
+                      person.experience ||
+                      "Research insight from UPSHIFT."}
+                  </p>
 
-              </article>
-            ))}
+                </article>
 
-          </div>
+              ))}
+
+            </div>
+          )}
+
+          {/* PATTERNS */}
+
+          {patterns.length > 0 && (
+
+            <div className="patterns-section">
+
+              <div className="section-label">
+                REPEATED PATTERNS
+              </div>
+
+              <div className="patterns-list">
+
+                {patterns.slice(0, 8).map(
+                  (item, index) => (
+
+                    <div
+                      className="pattern-row"
+                      key={`${item.pattern}-${index}`}
+                    >
+
+                      <strong>
+                        {item.pattern}
+                      </strong>
+
+                      <span>
+                        {item.records_count || 0} records
+                        {" · "}
+                        {item.evidence_strength ||
+                          "Early"}
+                      </span>
+
+                    </div>
+
+                  )
+                )}
+
+              </div>
+
+            </div>
+          )}
 
         </section>
 
-
         {/* YOUR NEXT MOVE */}
 
-        <section className="section move-section" id="move">
+        <section
+          className="section move-section"
+          id="move"
+        >
 
           <div className="section-label">
             02 — YOUR NEXT MOVE
@@ -330,12 +420,12 @@ function App() {
 
           </div>
 
-
           <div className="profile-form">
 
             <div className="form-row">
 
               <div className="form-field">
+
                 <label>AGE</label>
 
                 <input
@@ -344,9 +434,11 @@ function App() {
                   onChange={handleChange}
                   placeholder="20"
                 />
+
               </div>
 
               <div className="form-field">
+
                 <label>CURRENT SITUATION</label>
 
                 <input
@@ -355,14 +447,15 @@ function App() {
                   onChange={handleChange}
                   placeholder="Student / Working / Building"
                 />
+
               </div>
 
             </div>
 
-
             <div className="form-row">
 
               <div className="form-field">
+
                 <label>SKILLS</label>
 
                 <input
@@ -371,9 +464,11 @@ function App() {
                   onChange={handleChange}
                   placeholder="Python, AI, sales..."
                 />
+
               </div>
 
               <div className="form-field">
+
                 <label>MONTHLY INCOME</label>
 
                 <input
@@ -383,14 +478,15 @@ function App() {
                   onChange={handleChange}
                   placeholder="0"
                 />
+
               </div>
 
             </div>
 
-
             <div className="form-row">
 
               <div className="form-field">
+
                 <label>SAVINGS</label>
 
                 <input
@@ -400,9 +496,11 @@ function App() {
                   onChange={handleChange}
                   placeholder="0"
                 />
+
               </div>
 
               <div className="form-field">
+
                 <label>HOURS AVAILABLE / DAY</label>
 
                 <input
@@ -411,10 +509,10 @@ function App() {
                   onChange={handleChange}
                   placeholder="2"
                 />
+
               </div>
 
             </div>
-
 
             <div className="form-field">
 
@@ -428,7 +526,6 @@ function App() {
               />
 
             </div>
-
 
             <div className="form-field">
 
@@ -444,7 +541,6 @@ function App() {
 
             </div>
 
-
             <button
               className="primary-button"
               onClick={findMove}
@@ -457,7 +553,6 @@ function App() {
 
           </div>
 
-
           {/* AI RESULT */}
 
           {result && (
@@ -467,6 +562,7 @@ function App() {
               <div className="result-top">
 
                 <div>
+
                   <span className="section-label">
                     YOUR UPSHIFT SCORE
                   </span>
@@ -474,13 +570,16 @@ function App() {
                   <div className="score">
                     {result.upshift_score}
                   </div>
+
                 </div>
 
                 <div className="bottleneck">
 
                   <span>CURRENT BOTTLENECK</span>
 
-                  <h3>{result.bottleneck}</h3>
+                  <h3>
+                    {result.bottleneck}
+                  </h3>
 
                   <p>
                     {result.bottleneck_reason}
@@ -489,7 +588,6 @@ function App() {
                 </div>
 
               </div>
-
 
               <div className="result-grid">
 
@@ -501,10 +599,12 @@ function App() {
 
                     {result.next_moves?.map(
                       (move, index) => (
+
                         <div
                           className="move-item"
                           key={index}
                         >
+
                           <strong>
                             {String(index + 1).padStart(
                               2,
@@ -513,14 +613,15 @@ function App() {
                           </strong>
 
                           <p>{move}</p>
+
                         </div>
+
                       )
                     )}
 
                   </div>
 
                 </div>
-
 
                 <div className="result-block">
 
@@ -533,7 +634,6 @@ function App() {
                 </div>
 
               </div>
-
 
               {/* PEOPLE TO STUDY */}
 
@@ -574,10 +674,12 @@ function App() {
 
         </section>
 
-
         {/* WEALTH */}
 
-        <section className="section" id="wealth">
+        <section
+          className="section"
+          id="wealth"
+        >
 
           <div className="section-label">
             03 — WEALTH
@@ -599,10 +701,10 @@ function App() {
 
           </div>
 
-
           <div className="wealth-grid">
 
             <div className="wealth-card">
+
               <span>01</span>
 
               <h3>
@@ -616,10 +718,11 @@ function App() {
               <p>
                 Your current savings and financial base.
               </p>
+
             </div>
 
-
             <div className="wealth-card">
+
               <span>02</span>
 
               <h3>
@@ -634,10 +737,11 @@ function App() {
                 Your ability to increase future income
                 through skills.
               </p>
+
             </div>
 
-
             <div className="wealth-card">
+
               <span>03</span>
 
               <h3>
@@ -652,10 +756,11 @@ function App() {
                 Your understanding of money and
                 financial decisions.
               </p>
+
             </div>
 
-
             <div className="wealth-card">
+
               <span>04</span>
 
               <h3>
@@ -670,10 +775,10 @@ function App() {
                 Your financial safety and ability
                 to handle uncertainty.
               </p>
+
             </div>
 
           </div>
-
 
           <div className="wealth-total">
 
@@ -689,10 +794,12 @@ function App() {
 
         </section>
 
-
         {/* LEVEL UP */}
 
-        <section className="section" id="level">
+        <section
+          className="section"
+          id="level"
+        >
 
           <div className="section-label">
             04 — LEVEL UP
@@ -713,7 +820,6 @@ function App() {
 
           </div>
 
-
           <div className="level-grid">
 
             <div className="level-card">
@@ -730,7 +836,6 @@ function App() {
 
             </div>
 
-
             <div className="level-card">
 
               <span>CAREER</span>
@@ -745,7 +850,6 @@ function App() {
 
             </div>
 
-
             <div className="level-card">
 
               <span>MONEY</span>
@@ -759,7 +863,6 @@ function App() {
               </p>
 
             </div>
-
 
             <div className="level-card">
 
@@ -778,7 +881,6 @@ function App() {
           </div>
 
         </section>
-
 
         {/* FINAL CTA */}
 
@@ -804,7 +906,6 @@ function App() {
         </section>
 
       </main>
-
 
       {/* FOOTER */}
 
