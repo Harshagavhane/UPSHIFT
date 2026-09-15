@@ -374,8 +374,7 @@ function App() {
                 <span className="card-category">
                   {person.category || "RESEARCH"}
                 </span>
-
-                <h3>{person.name || "Unknown"}</h3>
+<h3>{person.person || person.name || "Unknown"}</h3>
 
                 <p>
                   {person.principle ||
